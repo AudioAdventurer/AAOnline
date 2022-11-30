@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.Library.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioAdventurer.Library.Cache", "libraries\Core\AudioAdventurer.Library.Cache\AudioAdventurer.Library.Cache.csproj", "{108CB09F-B424-4CDA-B496-38074663274C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioAdventurer.Library.Adventure", "libraries\Core\AudioAdventurer.Library.Adventure\AudioAdventurer.Library.Adventure.csproj", "{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{108CB09F-B424-4CDA-B496-38074663274C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{108CB09F-B424-4CDA-B496-38074663274C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{108CB09F-B424-4CDA-B496-38074663274C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{95577A40-87D0-45EE-821E-A729FC719EFF} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
 		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
 		{108CB09F-B424-4CDA-B496-38074663274C} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
+		{2A5C15FC-0E82-47A9-B7BB-CCEAE508944C} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB4A6A62-EE63-4A57-B3D0-5750C1F60987}
