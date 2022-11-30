@@ -15,6 +15,16 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
         }
 
+        protected override void SetProperties(IBehaviorInfo behaviorInfo)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override IBehaviorInfo GetProperties()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void AddParent(Thing newParent)
         {
             lock (_lock)

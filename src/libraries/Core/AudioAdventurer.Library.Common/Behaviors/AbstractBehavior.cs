@@ -46,5 +46,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
         }
 
         protected abstract void SetDefaultProperties();
+        protected abstract void SetProperties(IBehaviorInfo behaviorInfo);
+        public abstract IBehaviorInfo GetProperties();
     }
 }

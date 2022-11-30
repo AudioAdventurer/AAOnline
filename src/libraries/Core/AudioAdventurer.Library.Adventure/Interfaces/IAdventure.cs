@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AudioAdventurer.Library.Adventure.Interfaces;
 
@@ -9,5 +10,6 @@ public interface IAdventure
     public int MinRecommendedCharacterLevel { get; set; }
     public int MaxRecommendedCharacterLevel { get; set; }
     public List<string> RequiredGameExtensions { get; set; }
+    public Guid InitialThingNodeId { get; set; }
     public List<IThingNode> Things { get; set; }
 }

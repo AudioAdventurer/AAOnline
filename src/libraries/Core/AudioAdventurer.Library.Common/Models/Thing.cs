@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
@@ -16,6 +15,8 @@ namespace AudioAdventurer.Library.Common.Models
             IEnumerable<IBehavior> behaviors)
         {
             Lock = new object();
+            Info = thingInfo;
+
             _children = new List<IThing>();
             Keywords = new List<string>();
 
@@ -27,16 +28,12 @@ namespace AudioAdventurer.Library.Common.Models
         }
 
         private readonly List<IThing> _children;
-        private readonly BehaviorManager _behaviorManager;
 
         public object Lock { get; }
-        public string Name { get; }
-        public string FullName { get; set; }
-        public string Description { get; }
-        public string Title { get; }
+
+        public IThingInfo Info { get; }
 
         public IThing Parent { get; set; }
-        
         public IReadOnlyCollection<IThing> Children => _children.AsReadOnly();
 
         public ThingEventManager EventManager { get; }

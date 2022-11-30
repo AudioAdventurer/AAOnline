@@ -14,5 +14,15 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
             throw new NotImplementedException();
         }
+
+        protected override void SetProperties(IBehaviorInfo behaviorInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IBehaviorInfo GetProperties()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
