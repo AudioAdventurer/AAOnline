@@ -6,7 +6,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
     public class WorldBehavior 
         : AbstractBehavior
     {
-        public WorldBehavior(IBehaviorInfo behaviorInfo)
+        public WorldBehavior(IBehaviorData behaviorInfo)
             : base(behaviorInfo)
         {
         }
@@ -16,12 +16,12 @@ namespace AudioAdventurer.Library.Common.Behaviors
             throw new NotImplementedException();
         }
 
-        protected override void SetProperties(IBehaviorInfo behaviorInfo)
+        protected override void SetProperties(IBehaviorData behaviorInfo)
         {
             throw new NotImplementedException();
         }
 
-        public override IBehaviorInfo GetProperties()
+        public override IBehaviorData GetProperties()
         {
             throw new NotImplementedException();
         }

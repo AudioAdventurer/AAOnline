@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Managers
@@ -77,7 +76,7 @@ namespace AudioAdventurer.Library.Common.Managers
             }
         }
 
-        public U FindFirst<U>() where U : AbstractBehavior
+        public U FindFirst<U>() where U : IBehavior
         {
             lock (_managedBehaviors)
             {

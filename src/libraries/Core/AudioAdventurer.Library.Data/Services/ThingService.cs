@@ -8,7 +8,7 @@ using AudioAdventurer.Library.Data.Repos;
 
 namespace AudioAdventurer.Library.Data.Services
 {
-    public class ThingService
+    public class ThingService : IThingService
     {
         private readonly BehaviorInfoRepo _behaviorRepo;
         private readonly List<IBehaviorResolver> _behaviorResolvers;
@@ -48,19 +48,44 @@ namespace AudioAdventurer.Library.Data.Services
                     }
                 }
 
-                thing = new Thing(thingInfo, behaviors);
-                _thingCacheManager.SetItem(thingInfo.Id, thing);
-
+                Lazy<IThing> parent = null;
+                
                 if (thingInfo.ParentId.HasValue)
                 {
-                    thing.Parent = GetThing(thingInfo.ParentId.Value);
+                    parent = new Lazy<IThing>(
+                        () => this.GetThing(thingInfo.ParentId.Value), true);
                 }
+
+                Lazy<IEnumerable<IThing>> children = new Lazy<IEnumerable<IThing>>(
+                    () => this.GetChildren(thingInfo.Id));
+
+                thing = new Thing(
+                    thingInfo, 
+                    behaviors,
+                    parent,
+                    children);
+                _thingCacheManager.SetItem(thingInfo.Id, thing);
             }
 
             return thing;
         }
 
-        private IBehavior FindBehavior(IBehaviorInfo behaviorInfo)
+        public IEnumerable<IThing> GetChildren(Guid parentId)
+        {
+            var output = new List<IThing>();
+
+            var children = _thingRepo.GetChildren(parentId);
+
+            foreach (var child in children)
+            {
+                var childThing = GetThing(child.Id);
+                output.Add(childThing);
+            }
+
+            return output;
+        }
+
+        private IBehavior FindBehavior(IBehaviorData behaviorInfo)
         {
             foreach (var behaviorResolver in _behaviorResolvers)
             {

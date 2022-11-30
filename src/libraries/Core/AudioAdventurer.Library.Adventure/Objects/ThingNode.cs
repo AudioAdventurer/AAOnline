@@ -8,10 +8,10 @@ namespace AudioAdventurer.Library.Adventure.Objects
     {
         public ThingNode()
         {
-            BehaviorInfos = new List<IBehaviorInfo>();
+            BehaviorInfos = new List<IBehaviorData>();
         }
 
-        public IThingInfo ThingInfo { get; set; }
-        public List<IBehaviorInfo> BehaviorInfos { get; set; }
+        public IThingData ThingInfo { get; set; }
+        public List<IBehaviorData> BehaviorInfos { get; set; }
     }
 }

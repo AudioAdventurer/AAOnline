@@ -2,7 +2,7 @@
 
 namespace AudioAdventurer.Library.Common.Interfaces
 {
-    public interface IBehaviorInfo : IIdentifiableObject
+    public interface IBehaviorData : IIdentifiableObject
     {
         public string BehaviorType { get; set; }
 

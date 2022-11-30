@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Text.Json.Serialization;
 using AudioAdventurer.Library.Common.Interfaces;
-using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Behaviors
 {
-    public abstract class AbstractBehavior
+    public abstract class AbstractBehavior : IBehavior
     {
         protected readonly object _lock = new object();
 
         protected AbstractBehavior(
-            IBehaviorInfo behaviorInfo)
+            IBehaviorData behaviorInfo)
         {
             Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }
 
-        [JsonIgnore]
-        public Thing Parent { get; private set; }
+        public IThing Parent { get; private set; }
 
-        public void SetParent(Thing newParent)
+        public void SetParent(IThing newParent)
         {
             if (Parent != newParent)
             {
@@ -37,6 +34,17 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
+        public IBehaviorData GetBehaviorInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetBehaviorInfo(IBehaviorData info)
+        {
+            throw new NotImplementedException();
+        }
+
+        
         protected virtual void OnAddBehavior()
         {
         }
@@ -46,7 +54,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
         }
 
         protected abstract void SetDefaultProperties();
-        protected abstract void SetProperties(IBehaviorInfo behaviorInfo);
-        public abstract IBehaviorInfo GetProperties();
+        protected abstract void SetProperties(IBehaviorData behaviorInfo);
+        public abstract IBehaviorData GetProperties();
     }
 }

@@ -8,7 +8,7 @@ namespace AudioAdventurer.Library.Common.Interfaces
 
         public void SetParent(IThing parent);
 
-        public IBehaviorInfo GetBehaviorInfo();
-        public void SetBehaviorInfo(IBehaviorInfo info);
+        public IBehaviorData GetBehaviorInfo();
+        public void SetBehaviorInfo(IBehaviorData info);
     }
 }

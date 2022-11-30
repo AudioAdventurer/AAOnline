@@ -12,7 +12,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
         private readonly List<ExitDestination> _destinations;
 
-        public ExitBehavior(IBehaviorInfo behaviorInfo)
+        public ExitBehavior(IBehaviorData behaviorInfo)
             : base(behaviorInfo)
         {
             _destinations = new List<ExitDestination>();
@@ -23,12 +23,12 @@ namespace AudioAdventurer.Library.Common.Behaviors
             throw new NotImplementedException();
         }
 
-        protected override void SetProperties(IBehaviorInfo behaviorInfo)
+        protected override void SetProperties(IBehaviorData behaviorInfo)
         {
             throw new NotImplementedException();
         }
 
-        public override IBehaviorInfo GetProperties()
+        public override IBehaviorData GetProperties()
         {
             throw new NotImplementedException();
         }

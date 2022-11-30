@@ -5,7 +5,7 @@ namespace AudioAdventurer.Library.Common.Resolvers
 {
     public class CoreBehaviorResolver : IBehaviorResolver
     {
-        public IBehavior ResolveBehavior(IBehaviorInfo behaviorInfo)
+        public IBehavior ResolveBehavior(IBehaviorData behaviorInfo)
         {
             throw new NotImplementedException();
         }

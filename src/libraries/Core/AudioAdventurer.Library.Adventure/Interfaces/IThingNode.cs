@@ -5,6 +5,6 @@ namespace AudioAdventurer.Library.Adventure.Interfaces;
 
 public interface IThingNode
 {
-    public IThingInfo ThingInfo { get; set; }
-    public List<IBehaviorInfo> BehaviorInfos { get; set; }
+    public IThingData ThingInfo { get; set; }
+    public List<IBehaviorData> BehaviorInfos { get; set; }
 }

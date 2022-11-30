@@ -4,7 +4,7 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Data.Objects
 {
-    public class BehaviorInfo : IBehaviorInfo
+    public class BehaviorInfo : IBehaviorData
     {
         public BehaviorInfo()
         {

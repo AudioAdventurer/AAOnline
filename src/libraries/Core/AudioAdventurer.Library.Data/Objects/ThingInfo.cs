@@ -3,7 +3,7 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Data.Objects
 {
-    public class ThingInfo : IThingInfo
+    public class ThingInfo : IThingData
     {
         public Guid Id { get; set; }
         public Guid? ParentId { get; set; }

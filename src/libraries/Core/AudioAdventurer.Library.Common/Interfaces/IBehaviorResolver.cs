@@ -2,5 +2,5 @@
 
 public interface IBehaviorResolver
 {
-    public IBehavior ResolveBehavior(IBehaviorInfo behaviorInfo);   
+    public IBehavior ResolveBehavior(IBehaviorData behaviorInfo);   
 }

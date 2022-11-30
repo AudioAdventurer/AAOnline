@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
@@ -11,8 +12,10 @@ namespace AudioAdventurer.Library.Common.Models
     public class Thing : IThing
     {
         public Thing(
-            IThingInfo thingInfo,
-            IEnumerable<IBehavior> behaviors)
+            IThingData thingInfo,
+            IEnumerable<IBehavior> behaviors,
+            Lazy<IThing> parent,
+            Lazy<IEnumerable<IThing>> children)
         {
             Lock = new object();
             Info = thingInfo;
@@ -31,9 +34,9 @@ namespace AudioAdventurer.Library.Common.Models
 
         public object Lock { get; }
 
-        public IThingInfo Info { get; }
+        public IThingData Info { get; }
 
-        public IThing Parent { get; set; }
+        public Lazy<IThing> Parent { get; set; }
         public IReadOnlyCollection<IThing> Children => _children.AsReadOnly();
 
         public ThingEventManager EventManager { get; }
@@ -49,14 +52,12 @@ namespace AudioAdventurer.Library.Common.Models
                     // If the thing already has a parent, ensure we have permission to continue.
                     // Presence of MultipleParentsBehavior means we can always add more parents, but
                     // if it's not present, we have to see if removal would be accepted first.
-                    var multipleParentsBehavior = childThing.FindBehavior<MultipleParentsBehavior>();
                     RemoveChildEvent removalRequest = null;
 
                     var oldParent = childThing.Parent;
-                    if (oldParent != null
-                        && multipleParentsBehavior == null)
+                    if (oldParent != null)
                     {
-                        removalRequest = oldParent.RequestRemoval(childThing);
+                        removalRequest = oldParent.Value.RequestRemoval(childThing);
                         if (removalRequest.IsCanceled)
                         {
                             return false;
@@ -74,16 +75,14 @@ namespace AudioAdventurer.Library.Common.Models
                     // first, since we don't want to risk accidentally removing from the new parent, etc.
                     if (removalRequest != null)
                     {
-                        oldParent.PerformRemoval(
+                        oldParent.Value.PerformRemoval(
                             childThing, 
-                            removalRequest,
-                            multipleParentsBehavior);
+                            removalRequest);
                     }
 
                     PerformAdd(
                         childThing, 
-                        addRequest, 
-                        multipleParentsBehavior);
+                        addRequest);
                 }
             }
 
@@ -110,8 +109,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool PerformAdd(
             IThing thingToAdd, 
-            AddChildEvent addEvent, 
-            MultipleParentsBehavior multipleParentsBehavior)
+            AddChildEvent addEvent)
         {
             // If an existing thing is stackable with the added thing, combine the new
             // thing into the existing thing instead of simply adding it.
@@ -130,15 +128,8 @@ namespace AudioAdventurer.Library.Common.Models
                 _children.Add(thingToAdd);
             }
 
-            // Tell the child who the new parent is too. Via the MultipleParentsBehavior if applicable.
-            if (multipleParentsBehavior == null)
-            {
-                thingToAdd.Parent = this;
-            }
-            else
-            {
-                multipleParentsBehavior.AddParent(this);
-            }
+            thingToAdd.Parent = new Lazy<IThing>(this);
+            
 
             EventManager.OnMovementEvent(
                 addEvent, 
@@ -148,8 +139,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool PerformRemoval(
             IThing thingToRemove, 
-            RemoveChildEvent removalEvent, 
-            MultipleParentsBehavior multipleParentsBehavior)
+            RemoveChildEvent removalEvent)
         {
             if (removalEvent.IsCanceled)
             {
@@ -167,16 +157,7 @@ namespace AudioAdventurer.Library.Common.Models
                 _children.Remove(thingToRemove);
             }
 
-            // If we don't have a MultipleParentsBehavior, directly remove the one-allowed 
-            // parent ourselves, else use the behavior's logic for adjusting the parents.
-            if (multipleParentsBehavior == null)
-            {
-                thingToRemove.Parent = null;
-            }
-            else
-            {
-                multipleParentsBehavior.RemoveParent(this);
-            }
+            thingToRemove.Parent = null;
 
             return true;
         }
