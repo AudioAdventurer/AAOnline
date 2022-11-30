@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.Apps.Console", "apps\AudioAdventurer.Apps.Console\AudioAdventurer.Apps.Console.csproj", "{D5013EA1-AEF4-498A-8534-C3F677791D74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{9A3C9E66-6D6B-4E3C-9700-C16E09B9C6AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{B3F11AC5-BF0D-4FCA-8D01-B1A83C3396CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F513B5F7-E632-4E51-8E31-54FBB706A175}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FoyerServer", "FoyerServer", "{BFDE30D3-21AF-422B-B594-5E02D110B242}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{AE8B64F9-DDC7-407A-A227-7AB846E11688}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameServer", "GameServer", "{B6A181F1-9E03-4CF3-A0E0-591CEF200629}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.FoyerServer.Console", "modules\FoyerServer\AudioAdventurer.FoyerServer.Console\AudioAdventurer.FoyerServer.Console.csproj", "{E57A18B8-1A9B-4F28-9004-4E5821A0137D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.GameServer.Console", "modules\GameServer\AudioAdventurer.GameServer.Console\AudioAdventurer.GameServer.Console.csproj", "{0E273C48-97D9-4C8B-A901-F0FCF5A81847}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdventureBuilderServer", "AdventureBuilderServer", "{7DC66035-F4F1-4115-A10D-104ADDC4AF8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.AdventureBuilderServer.Console", "modules\AdventureBuilderServer\AudioAdventurer.AdventureBuilderServer.Console\AudioAdventurer.AdventureBuilderServer.Console.csproj", "{75308373-C893-43C9-9981-20BE213B4901}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameExtensions", "GameExtensions", "{9B5F1C0D-FA56-429E-BCF9-751A986DB9A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0366AEE5-AC20-4C69-8987-35D9A87FAFD3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.Library.Common", "libraries\Core\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj", "{95577A40-87D0-45EE-821E-A729FC719EFF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioAdventurer.Library.Data", "libraries\Core\AudioAdventurer.Library.Data\AudioAdventurer.Library.Data.csproj", "{14AF3E26-48FB-4623-AB97-D43AABCFD6E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioAdventurer.Library.Cache", "libraries\Core\AudioAdventurer.Library.Cache\AudioAdventurer.Library.Cache.csproj", "{108CB09F-B424-4CDA-B496-38074663274C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5013EA1-AEF4-498A-8534-C3F677791D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5013EA1-AEF4-498A-8534-C3F677791D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5013EA1-AEF4-498A-8534-C3F677791D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5013EA1-AEF4-498A-8534-C3F677791D74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E57A18B8-1A9B-4F28-9004-4E5821A0137D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E57A18B8-1A9B-4F28-9004-4E5821A0137D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E57A18B8-1A9B-4F28-9004-4E5821A0137D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E57A18B8-1A9B-4F28-9004-4E5821A0137D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E273C48-97D9-4C8B-A901-F0FCF5A81847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E273C48-97D9-4C8B-A901-F0FCF5A81847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E273C48-97D9-4C8B-A901-F0FCF5A81847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E273C48-97D9-4C8B-A901-F0FCF5A81847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75308373-C893-43C9-9981-20BE213B4901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75308373-C893-43C9-9981-20BE213B4901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75308373-C893-43C9-9981-20BE213B4901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75308373-C893-43C9-9981-20BE213B4901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95577A40-87D0-45EE-821E-A729FC719EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95577A40-87D0-45EE-821E-A729FC719EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95577A40-87D0-45EE-821E-A729FC719EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95577A40-87D0-45EE-821E-A729FC719EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108CB09F-B424-4CDA-B496-38074663274C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108CB09F-B424-4CDA-B496-38074663274C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108CB09F-B424-4CDA-B496-38074663274C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108CB09F-B424-4CDA-B496-38074663274C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5013EA1-AEF4-498A-8534-C3F677791D74} = {9A3C9E66-6D6B-4E3C-9700-C16E09B9C6AA}
+		{BFDE30D3-21AF-422B-B594-5E02D110B242} = {F513B5F7-E632-4E51-8E31-54FBB706A175}
+		{AE8B64F9-DDC7-407A-A227-7AB846E11688} = {F513B5F7-E632-4E51-8E31-54FBB706A175}
+		{B6A181F1-9E03-4CF3-A0E0-591CEF200629} = {F513B5F7-E632-4E51-8E31-54FBB706A175}
+		{E57A18B8-1A9B-4F28-9004-4E5821A0137D} = {BFDE30D3-21AF-422B-B594-5E02D110B242}
+		{0E273C48-97D9-4C8B-A901-F0FCF5A81847} = {B6A181F1-9E03-4CF3-A0E0-591CEF200629}
+		{7DC66035-F4F1-4115-A10D-104ADDC4AF8D} = {F513B5F7-E632-4E51-8E31-54FBB706A175}
+		{75308373-C893-43C9-9981-20BE213B4901} = {7DC66035-F4F1-4115-A10D-104ADDC4AF8D}
+		{9B5F1C0D-FA56-429E-BCF9-751A986DB9A0} = {B3F11AC5-BF0D-4FCA-8D01-B1A83C3396CD}
+		{0366AEE5-AC20-4C69-8987-35D9A87FAFD3} = {B3F11AC5-BF0D-4FCA-8D01-B1A83C3396CD}
+		{95577A40-87D0-45EE-821E-A729FC719EFF} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
+		{14AF3E26-48FB-4623-AB97-D43AABCFD6E7} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
+		{108CB09F-B424-4CDA-B496-38074663274C} = {0366AEE5-AC20-4C69-8987-35D9A87FAFD3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB4A6A62-EE63-4A57-B3D0-5750C1F60987}
+	EndGlobalSection
+EndGlobal
