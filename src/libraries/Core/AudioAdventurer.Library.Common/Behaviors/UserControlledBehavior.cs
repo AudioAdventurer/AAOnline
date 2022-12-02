@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Sessions;
 
@@ -7,24 +8,20 @@ namespace AudioAdventurer.Library.Common.Behaviors
     public class UserControlledBehavior
         : AbstractBehavior
     {
-        public UserControlledBehavior(IBehaviorInfo behaviorInfo)
+        public UserControlledBehavior(IBehaviorData behaviorInfo)
             : base(behaviorInfo)
         {
         }
 
         public Session Session { get; set; }
 
-        protected override void SetDefaultProperties()
+
+        public override void SetProperties(Dictionary<string, string> behaviorInfo)
         {
             throw new NotImplementedException();
         }
 
-        protected override void SetProperties(IBehaviorInfo behaviorInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IBehaviorInfo GetProperties()
+        public override IBehaviorData GetProperties()
         {
             throw new NotImplementedException();
         }

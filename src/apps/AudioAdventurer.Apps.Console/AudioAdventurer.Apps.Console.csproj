@@ -11,4 +11,10 @@
     <PackageReference Include="Autofac" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Adventure\AudioAdventurer.Library.Adventure.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Data\AudioAdventurer.Library.Data.csproj" />
+  </ItemGroup>
+
 </Project>

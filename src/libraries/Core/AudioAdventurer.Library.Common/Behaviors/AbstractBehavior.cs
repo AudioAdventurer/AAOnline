@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Behaviors
@@ -6,11 +7,13 @@ namespace AudioAdventurer.Library.Common.Behaviors
     public abstract class AbstractBehavior : IBehavior
     {
         protected readonly object _lock = new object();
+        protected IBehaviorData _behaviorData;
 
         protected AbstractBehavior(
             IBehaviorData behaviorInfo)
         {
-            Id = Guid.NewGuid();
+            Id = behaviorInfo.Id;
+            SetProperties(behaviorInfo.Properties);
         }
 
         public Guid Id { get; set; }
@@ -34,16 +37,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
-        public IBehaviorData GetBehaviorInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetBehaviorInfo(IBehaviorData info)
-        {
-            throw new NotImplementedException();
-        }
-
         
         protected virtual void OnAddBehavior()
         {
@@ -53,8 +46,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
         }
 
-        protected abstract void SetDefaultProperties();
-        protected abstract void SetProperties(IBehaviorData behaviorInfo);
+        public abstract void SetProperties(Dictionary<string, string> behaviorInfo);
+        
         public abstract IBehaviorData GetProperties();
     }
 }

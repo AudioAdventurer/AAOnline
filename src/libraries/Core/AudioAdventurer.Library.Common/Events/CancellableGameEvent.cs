@@ -1,7 +1,6 @@
 ﻿using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
-using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Common.Senses;
 
 namespace AudioAdventurer.Library.Common.Events

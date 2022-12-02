@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Behaviors
@@ -10,13 +11,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
             : base(behaviorInfo)
         {
         }
-
-        protected override void SetDefaultProperties()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SetProperties(IBehaviorData behaviorInfo)
+        
+        public override void SetProperties(Dictionary<string, string> behaviorInfo)
         {
             throw new NotImplementedException();
         }

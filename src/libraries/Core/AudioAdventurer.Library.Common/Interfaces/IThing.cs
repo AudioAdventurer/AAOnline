@@ -1,7 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Managers;
-using System.Collections.Generic;
-using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Events;
 
 namespace AudioAdventurer.Library.Common.Interfaces
@@ -12,24 +10,27 @@ namespace AudioAdventurer.Library.Common.Interfaces
         public IThingData Info { get; }
         public ThingEventManager EventManager { get; }
         public BehaviorManager BehaviorManager { get; }
-        public List<string> Keywords { get; }
-
-        public Lazy<IThing> Parent { get; set; }
+        
+        public IReadOnlyCollection<IThing> Parents { get;  }
         public IReadOnlyCollection<IThing> Children { get; }
 
-        public bool Add(IThing childThing);
-        
-        public AddChildEvent RequestAdd(IThing thingToAdd);
-        
-        public RemoveChildEvent RequestRemoval(IThing thingToRemove);
+        bool AddChild(IThing childThing);
+        bool RemoveChild(IThing childThing);
 
-        public bool PerformAdd(
+
+        public bool PerformChildAdd(
             IThing thingToAdd,
             AddChildEvent addEvent);
 
-        public bool PerformRemoval(
+        public bool PerformChildRemoval(
             IThing thingToRemove,
             RemoveChildEvent removalEvent);
+
+        public bool PerformParentAdd(
+            IThing parentToAdd);
+
+        public bool PerformParentRemoval(
+            IThing parentToRemove);
 
         public IThing Combine(IThing thing);
         public bool CanStack(IThing thing);

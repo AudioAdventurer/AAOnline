@@ -11,6 +11,8 @@ namespace AudioAdventurer.Library.Adventure.Objects
             Things = new List<IThingNode>();
         }
 
+        public Guid PublisherId { get; set; }
+        public Guid CompatibleUniverseId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int MinRecommendedCharacterLevel { get; set; }

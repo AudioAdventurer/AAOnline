@@ -35,10 +35,6 @@ namespace AudioAdventurer.Library.Data.Repos
             return obj;
         }
 
-        public IEnumerable<T> GetChildren(Guid parentId)
-        {
-            return GetMany(Query.EQ("ParentId", parentId));
-        }
 
         public IEnumerable<T> GetMany(BsonExpression q, int skip = 0, int limit = Int32.MaxValue)
         {

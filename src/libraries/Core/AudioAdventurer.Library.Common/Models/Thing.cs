@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AudioAdventurer.Library.Common.Behaviors;
+using System.Linq;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
@@ -11,17 +11,35 @@ namespace AudioAdventurer.Library.Common.Models
 {
     public class Thing : IThing
     {
+        private readonly Lazy<List<IThing>> _children;
+        private readonly Lazy<List<IThing>> _parents;
+
         public Thing(
             IThingData thingInfo,
             IEnumerable<IBehavior> behaviors,
-            Lazy<IThing> parent,
-            Lazy<IEnumerable<IThing>> children)
+            Lazy<List<IThing>> parents = null,
+            Lazy<List<IThing>> children = null)
         {
             Lock = new object();
             Info = thingInfo;
 
-            _children = new List<IThing>();
-            Keywords = new List<string>();
+            if (children == null)
+            {
+                _children = new Lazy<List<IThing>>(new List<IThing>());
+            }
+            else
+            {
+                _children = children;
+            }
+
+            if (parents == null)
+            {
+                _parents = new Lazy<List<IThing>>(new List<IThing>());
+            }
+            else
+            {
+                _parents = parents;
+            }
 
             EventManager = new ThingEventManager(this);
             
@@ -30,20 +48,18 @@ namespace AudioAdventurer.Library.Common.Models
             BehaviorManager = behaviorManager;
         }
 
-        private readonly List<IThing> _children;
 
         public object Lock { get; }
 
         public IThingData Info { get; }
 
-        public Lazy<IThing> Parent { get; set; }
-        public IReadOnlyCollection<IThing> Children => _children.AsReadOnly();
+        public IReadOnlyCollection<IThing> Parents =>_parents.Value.AsReadOnly();
+        public IReadOnlyCollection<IThing> Children => _children.Value.AsReadOnly();
 
         public ThingEventManager EventManager { get; }
         public BehaviorManager BehaviorManager { get; }
-        public List<string> Keywords { get; }
 
-        public bool Add(IThing childThing)
+        public bool AddChild(IThing childThing)
         {
             lock (Lock)
             {
@@ -54,17 +70,20 @@ namespace AudioAdventurer.Library.Common.Models
                     // if it's not present, we have to see if removal would be accepted first.
                     RemoveChildEvent removalRequest = null;
 
-                    var oldParent = childThing.Parent;
-                    if (oldParent != null)
+                    if (childThing.Info.MaxParents > 1)
                     {
-                        removalRequest = oldParent.Value.RequestRemoval(childThing);
-                        if (removalRequest.IsCanceled)
+                        foreach (var parent in childThing.Parents)
                         {
-                            return false;
+                            removalRequest = parent.RequestChildRemoval(childThing);
+
+                            if (removalRequest.IsCanceled)
+                            {
+                                return false;
+                            }
                         }
                     }
 
-                    var addRequest = RequestAdd(childThing);
+                    var addRequest = this.RequestChildAdd(childThing);
                     if (addRequest.IsCanceled)
                     {
                         return false;
@@ -75,12 +94,15 @@ namespace AudioAdventurer.Library.Common.Models
                     // first, since we don't want to risk accidentally removing from the new parent, etc.
                     if (removalRequest != null)
                     {
-                        oldParent.Value.PerformRemoval(
-                            childThing, 
-                            removalRequest);
+                        foreach (var parent in childThing.Parents)
+                        {
+                            parent.PerformChildRemoval(
+                                childThing,
+                                removalRequest);
+                        }
                     }
 
-                    PerformAdd(
+                    PerformChildAdd(
                         childThing, 
                         addRequest);
                 }
@@ -89,25 +111,26 @@ namespace AudioAdventurer.Library.Common.Models
             return true;
         }
 
-        public AddChildEvent RequestAdd(IThing thingToAdd)
+        public bool RemoveChild(IThing thing)
         {
-            // Prepare an add event request, and ensure both the new parent (this) and the 
-            // thing itself both get a chance to cancel this request before committing.
-            var addChildEvent = new AddChildEvent(thingToAdd, this);
-            EventManager.OnMovementRequest(addChildEvent, EventScope.SelfDown);
-            thingToAdd.EventManager.OnMovementRequest(addChildEvent, EventScope.SelfDown);
-            return addChildEvent;
+            // No two threads may add/remove any combination of the parent/sub-thing at the same time,
+            // in order to prevent race conditions resulting in thing-disconnection/duplication/etc.
+            lock (Lock)
+            {
+                lock (thing.Lock)
+                {
+                    if (Children.Contains(thing))
+                    {
+                        var removalRequest = this.RequestChildRemoval(thing);
+                        return PerformChildRemoval(thing, removalRequest);
+                    }
+                }
+            }
+
+            return false;
         }
 
-        public RemoveChildEvent RequestRemoval(IThing thingToRemove)
-        {
-            // Create and raise a removal event request.
-            var removeChildEvent = new RemoveChildEvent(thingToRemove);
-            EventManager.OnMovementRequest(removeChildEvent, EventScope.SelfDown);
-            return removeChildEvent;
-        }
-
-        public bool PerformAdd(
+        public bool PerformChildAdd(
             IThing thingToAdd, 
             AddChildEvent addEvent)
         {
@@ -122,14 +145,15 @@ namespace AudioAdventurer.Library.Common.Models
                 }
             }
 
-            // The item cannot be combined to an existing stack, so add the item as a child of the specified parent.
-            if (!_children.Contains(thingToAdd))
+            // The item cannot be combined to an existing stack,
+            // so add the item as a child of the specified parent.
+            var children = _children.Value.ToList();
+            if (!children.Contains(thingToAdd))
             {
-                _children.Add(thingToAdd);
+                children.Add(thingToAdd);
             }
 
-            thingToAdd.Parent = new Lazy<IThing>(this);
-            
+            thingToAdd.PerformParentAdd(this);
 
             EventManager.OnMovementEvent(
                 addEvent, 
@@ -137,7 +161,7 @@ namespace AudioAdventurer.Library.Common.Models
             return true;
         }
 
-        public bool PerformRemoval(
+        public bool PerformChildRemoval(
             IThing thingToRemove, 
             RemoveChildEvent removalEvent)
         {
@@ -151,13 +175,42 @@ namespace AudioAdventurer.Library.Common.Models
                 removalEvent, 
                 EventScope.SelfDown);
 
+            var children = _children.Value;
+
             // If the thing to remove was in our Children collection, remove it.
-            if (_children.Contains(thingToRemove))
+            if (children.Contains(thingToRemove))
             {
-                _children.Remove(thingToRemove);
+                children.Remove(thingToRemove);
             }
 
-            thingToRemove.Parent = null;
+            thingToRemove.PerformParentRemoval(this);
+
+            return true;
+        }
+
+        public bool PerformParentAdd(
+            IThing parentToAdd)
+        {
+            var parents = _parents.Value;
+
+            if (!parents.Contains(parentToAdd))
+            {
+                parents.Add(parentToAdd);
+            }
+
+            return true;
+        }
+
+
+        public bool PerformParentRemoval(
+            IThing parentToRemove)
+        {
+            var parents = _parents.Value;
+
+            if (parents.Contains(parentToRemove))
+            {
+                parents.Remove(parentToRemove);
+            }
 
             return true;
         }

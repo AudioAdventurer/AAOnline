@@ -3,7 +3,7 @@ using LiteDB;
 
 namespace AudioAdventurer.Library.Data.Repos
 {
-    public class ThingInfoRepo : AbstractRepo<ThingInfo>
+    public class ThingInfoRepo : AbstractRepo<ThingData>
     {
         public ThingInfoRepo(LiteDatabase db) 
             : base(db)

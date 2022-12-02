@@ -11,19 +11,25 @@ namespace AudioAdventurer.Library.Data.Services
     public class ThingService : IThingService
     {
         private readonly BehaviorInfoRepo _behaviorRepo;
-        private readonly List<IBehaviorResolver> _behaviorResolvers;
+        private readonly RelationshipRepo _relationshipRepo;
         private readonly ThingInfoRepo _thingRepo;
+
+        private readonly List<IBehaviorResolver> _behaviorResolvers;
+        
         private readonly CacheManager<IThing> _thingCacheManager;
 
         public ThingService(
             BehaviorInfoRepo behaviorRepo,
+            RelationshipRepo relationshipRepo,
             ThingInfoRepo thingRepo,
             IEnumerable<IBehaviorResolver> behaviorResolvers,
             CacheManager<IThing> thingCacheManager)
         {
             _behaviorRepo = behaviorRepo;
-            _behaviorResolvers = behaviorResolvers.ToList();
+            _relationshipRepo = relationshipRepo;
             _thingRepo = thingRepo;
+
+            _behaviorResolvers = behaviorResolvers.ToList();
             _thingCacheManager = thingCacheManager;
         }
 
@@ -34,7 +40,7 @@ namespace AudioAdventurer.Library.Data.Services
             if (thing == null)
             {
                 var thingInfo = _thingRepo.GetOne(id);
-                var behaviorInfos = _behaviorRepo.GetChildren(thingInfo.Id);
+                var behaviorInfos = _behaviorRepo.GetThingBehaviors(thingInfo.Id);
 
                 var behaviors = new List<IBehavior>();
 
@@ -48,21 +54,16 @@ namespace AudioAdventurer.Library.Data.Services
                     }
                 }
 
-                Lazy<IThing> parent = null;
-                
-                if (thingInfo.ParentId.HasValue)
-                {
-                    parent = new Lazy<IThing>(
-                        () => this.GetThing(thingInfo.ParentId.Value), true);
-                }
+                Lazy<List<IThing>> parents = new Lazy<List<IThing>>(
+                    () => this.GetParents(thingInfo.Id).ToList());
 
-                Lazy<IEnumerable<IThing>> children = new Lazy<IEnumerable<IThing>>(
-                    () => this.GetChildren(thingInfo.Id));
+                Lazy<List<IThing>> children = new Lazy<List<IThing>>(
+                    () => this.GetChildren(thingInfo.Id).ToList());
 
                 thing = new Thing(
                     thingInfo, 
                     behaviors,
-                    parent,
+                    parents,
                     children);
                 _thingCacheManager.SetItem(thingInfo.Id, thing);
             }
@@ -70,11 +71,26 @@ namespace AudioAdventurer.Library.Data.Services
             return thing;
         }
 
+        public IEnumerable<IThing> GetParents(Guid childId)
+        {
+            var output = new List<IThing>();
+
+            var parents = _relationshipRepo.GetParents(childId);
+
+            foreach (var parent in parents)
+            {
+                var parentThing = GetThing(parent.Id);
+                output.Add(parentThing);
+            }
+
+            return output;
+        }
+
         public IEnumerable<IThing> GetChildren(Guid parentId)
         {
             var output = new List<IThing>();
 
-            var children = _thingRepo.GetChildren(parentId);
+            var children = _relationshipRepo.GetChildren(parentId);
 
             foreach (var child in children)
             {
@@ -93,7 +109,6 @@ namespace AudioAdventurer.Library.Data.Services
 
                 if (behavior != null)
                 {
-                    behavior.SetBehaviorInfo(behaviorInfo);
                     return behavior;
                 }
             }

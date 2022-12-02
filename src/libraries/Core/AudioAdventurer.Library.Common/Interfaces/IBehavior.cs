@@ -1,4 +1,4 @@
-﻿using AudioAdventurer.Library.Common.Models;
+﻿using System.Collections.Generic;
 
 namespace AudioAdventurer.Library.Common.Interfaces
 {
@@ -8,7 +8,8 @@ namespace AudioAdventurer.Library.Common.Interfaces
 
         public void SetParent(IThing parent);
 
-        public IBehaviorData GetBehaviorInfo();
-        public void SetBehaviorInfo(IBehaviorData info);
+        public void SetProperties(Dictionary<string, string> behaviorInfo);
+
+        public IBehaviorData GetProperties();
     }
 }

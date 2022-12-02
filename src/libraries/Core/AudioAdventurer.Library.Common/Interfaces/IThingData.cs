@@ -13,5 +13,9 @@
         public string SingularPrefix { get; set; }
 
         public string PluralSuffix { get; set; }
+
+        public int MaxChildren { get; set; }
+
+        public int MaxParents { get; set; }
     }
 }
