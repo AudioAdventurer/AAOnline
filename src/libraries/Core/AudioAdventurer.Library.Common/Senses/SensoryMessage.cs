@@ -6,6 +6,7 @@ namespace AudioAdventurer.Library.Common.Senses
 {
     public class SensoryMessage
     {
+
         public SensoryMessage(
             SensoryType targetedSense,
             int messageStrength,
@@ -14,14 +15,18 @@ namespace AudioAdventurer.Library.Common.Senses
             TargetedSense = targetedSense;
             MessageStrength = messageStrength;
             Message = message;
+
+            Context = new Hashtable();
         }
 
-        public SensoryType TargetedSense { get; private set; }
+        public Hashtable Context { get; }
+
+        public SensoryType TargetedSense { get; }
 
         /// <summary>Gets the strength of the message.</summary>
-        public int MessageStrength { get; private set; }
+        public int MessageStrength { get; }
 
         /// <summary>Gets the raw message to be processed by sense receptors.</summary>
-        public ContextualString Message { get; private set; }
+        public ContextualString Message { get; }
     }
 }

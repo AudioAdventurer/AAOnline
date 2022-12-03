@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using AudioAdventurer.Library.Cache.Objects;
+using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Cache.Managers
 {
     public class CacheManager<T>
+        where T : IIdentifiableObject
     {
         private readonly Dictionary<Guid, CacheObject<T>> _cache;
 
@@ -24,10 +26,10 @@ namespace AudioAdventurer.Library.Cache.Managers
             return default(T);
         }
 
-        public void SetItem(Guid id, T obj)
+        public void SetItem(T obj)
         {
-            var cacheObject = new CacheObject<T>(id, obj);
-            _cache[id] = cacheObject;
+            var cacheObject = new CacheObject<T>(obj.Id, obj);
+            _cache[obj.Id] = cacheObject;
         }
     }
 }

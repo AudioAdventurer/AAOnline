@@ -16,7 +16,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
         private readonly IThingService _thingService;
 
         public ExitBehavior(
-            IBehaviorData behaviorInfo, IThingService thingService)
+            IBehaviorData behaviorInfo, 
+            IThingService thingService)
             : base(behaviorInfo)
         {
             _destinations = new List<ExitDestination>();
@@ -101,14 +102,16 @@ namespace AudioAdventurer.Library.Common.Behaviors
                 return false;
             }
 
-            var parent = thingToMove.Parents.FirstOrDefault();
+            var parentId = thingToMove.Parents.FirstOrDefault();
+            var parent = _thingService.GetThing(parentId);
+
             if (parent == null)
             {
                 return false;
             }
 
             // Find the target location to be reached from here.
-            var destinationInfo = _destinations.GetDestinationFrom(parent.Info.Id);
+            var destinationInfo = _destinations.GetDestinationFrom(parent.Id);
             if (destinationInfo == null)
             {
                 // There was no destination reachable from the thing's starting location.
@@ -125,18 +128,22 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
             string dir = destinationInfo.ExitCommand;
 
-            var leaveContextMessage = new ContextualString(thingToMove, parent)
+            var leaveContextMessage = new ContextualString(
+                thingToMove, 
+                parent)
             {
                 ToOriginator = null,
-                ToReceiver = $"{thingToMove.Info.Name} moves {dir}.",
-                ToOthers = $"{thingToMove.Info.Name} moves {dir}.",
+                ToReceiver = $"{thingToMove.Name} moves {dir}.",
+                ToOthers = $"{thingToMove.Name} moves {dir}.",
             };
 
-            var arriveContextMessage = new ContextualString(thingToMove, destination)
+            var arriveContextMessage = new ContextualString(
+                thingToMove, 
+                destination)
             {
-                ToOriginator = $"You move {dir} to {destination.Info.Name}.",
-                ToReceiver = $"{thingToMove.Info.Name} arrives, heading {dir}.",
-                ToOthers = $"{thingToMove.Info.Name} arrives, heading {dir}.",
+                ToOriginator = $"You move {dir} to {destination.Name}.",
+                ToReceiver = $"{thingToMove.Name} arrives, heading {dir}.",
+                ToOthers = $"{thingToMove.Name} arrives, heading {dir}.",
             };
             var leaveMessage = new SensoryMessage(SensoryType.Sight, 100, leaveContextMessage);
             var arriveMessage = new SensoryMessage(SensoryType.Sight, 100, arriveContextMessage);

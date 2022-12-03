@@ -90,10 +90,10 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (cascadeEventToChildren)
                 {
                     // Enqueue all the current target's children for processing.
-                    foreach (Thing child in currentRequestTarget.Children)
-                    {
-                        requestTargetQueue.Enqueue(child);
-                    }
+                    // foreach (Thing child in currentRequestTarget.Children)
+                    // {
+                    //     requestTargetQueue.Enqueue(child);
+                    // }
                 }
             }
         }

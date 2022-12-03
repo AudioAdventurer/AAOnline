@@ -10,9 +10,14 @@ namespace AudioAdventurer.Library.Common.Behaviors
 {
     public class MovableBehavior : AbstractBehavior
     {
-        public MovableBehavior(IBehaviorData behaviorInfo) 
+        private readonly IThingService _thingService;
+
+        public MovableBehavior(
+            IBehaviorData behaviorInfo,
+            IThingService thingService) 
             : base(behaviorInfo)
         {
+            _thingService = thingService;
         }
 
         public override void SetProperties(
@@ -33,7 +38,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
             SensoryMessage arrivingMessage)
         {
             IThing actor = Parent;
-            IThing goingFrom = actor.Parents.FirstOrDefault();
+            var goingFromId = actor.Parents.FirstOrDefault();
+            var goingFrom = _thingService.GetThing(goingFromId);
 
             // Prepare events to request and send (if not canceled).
             var leaveEvent = new LeaveEvent(actor, leavingMessage)
@@ -59,7 +65,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
                 if (!arriveEvent.IsCanceled)
                 {
                     actor.EventManager.OnMovementEvent(leaveEvent, EventScope.ParentsDown);
-                    actor.RemoveFromParents();
+//                    actor.RemoveFromParents();
                     destination.AddChild(actor);
 
                     // TODO: Ensure these automatically enqueue a save.

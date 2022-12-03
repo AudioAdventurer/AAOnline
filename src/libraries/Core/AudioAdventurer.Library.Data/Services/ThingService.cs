@@ -54,48 +54,50 @@ namespace AudioAdventurer.Library.Data.Services
                     }
                 }
 
-                Lazy<List<IThing>> parents = new Lazy<List<IThing>>(
-                    () => this.GetParents(thingInfo.Id).ToList());
-
-                Lazy<List<IThing>> children = new Lazy<List<IThing>>(
-                    () => this.GetChildren(thingInfo.Id).ToList());
+                var parentIds = this.GetParentIds(thingInfo.Id);
+                var childIds = this.GetChildIds(thingInfo.Id);
 
                 thing = new Thing(
-                    thingInfo, 
+                    thingInfo,
                     behaviors,
-                    parents,
-                    children);
-                _thingCacheManager.SetItem(thingInfo.Id, thing);
+                    parentIds,
+                    childIds,
+                    this);
+
+                _thingCacheManager.SetItem(thing);
             }
 
             return thing;
         }
 
-        public IEnumerable<IThing> GetParents(Guid childId)
+        public void SaveThing(IThing thing)
         {
-            var output = new List<IThing>();
+
+        }
+
+        private IEnumerable<Guid> GetParentIds(Guid childId)
+        {
+            var output = new List<Guid>();
 
             var parents = _relationshipRepo.GetParents(childId);
 
             foreach (var parent in parents)
             {
-                var parentThing = GetThing(parent.Id);
-                output.Add(parentThing);
+                output.Add(parent.Id);
             }
 
             return output;
         }
 
-        public IEnumerable<IThing> GetChildren(Guid parentId)
+        private IEnumerable<Guid> GetChildIds(Guid parentId)
         {
-            var output = new List<IThing>();
+            var output = new List<Guid>();
 
             var children = _relationshipRepo.GetChildren(parentId);
 
             foreach (var child in children)
             {
-                var childThing = GetThing(child.Id);
-                output.Add(childThing);
+                output.Add(child.ChildId);
             }
 
             return output;

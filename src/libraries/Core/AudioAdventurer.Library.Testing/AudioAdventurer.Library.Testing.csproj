@@ -2,16 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\AudioAdventurer.Library.Cache\AudioAdventurer.Library.Cache.csproj" />
     <ProjectReference Include="..\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
   </ItemGroup>
 

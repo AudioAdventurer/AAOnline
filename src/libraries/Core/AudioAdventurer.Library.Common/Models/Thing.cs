@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioAdventurer.Library.Common.Constants;
-using AudioAdventurer.Library.Common.Events;
-using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Managers;
 
@@ -11,118 +8,131 @@ namespace AudioAdventurer.Library.Common.Models
 {
     public class Thing : IThing
     {
-        private readonly Lazy<List<IThing>> _children;
-        private readonly Lazy<List<IThing>> _parents;
+        private readonly IThingData _thingData;
+        private readonly List<Guid> _children;
+        private readonly List<Guid> _parents;
+        private readonly IThingService _thingService;
 
         public Thing(
-            IThingData thingInfo,
+            IThingData data,
             IEnumerable<IBehavior> behaviors,
-            Lazy<List<IThing>> parents = null,
-            Lazy<List<IThing>> children = null)
+            IEnumerable<Guid> parents,
+            IEnumerable<Guid> children,
+            IThingService thingService)
         {
-            Lock = new object();
-            Info = thingInfo;
+            _thingData = data;
+            _children = children.ToList();
+            _parents = parents.ToList();
 
-            if (children == null)
-            {
-                _children = new Lazy<List<IThing>>(new List<IThing>());
-            }
-            else
-            {
-                _children = children;
-            }
-
-            if (parents == null)
-            {
-                _parents = new Lazy<List<IThing>>(new List<IThing>());
-            }
-            else
-            {
-                _parents = parents;
-            }
-
+            _thingService = thingService;
             EventManager = new ThingEventManager(this);
-            
-            var behaviorManager = new BehaviorManager(this);
-            behaviorManager.Add(behaviors);
-            BehaviorManager = behaviorManager;
+            BehaviorManager = new BehaviorManager(
+                this,
+                behaviors);
         }
 
-
-        public object Lock { get; }
-
-        public IThingData Info { get; }
-
-        public IReadOnlyCollection<IThing> Parents =>_parents.Value.AsReadOnly();
-        public IReadOnlyCollection<IThing> Children => _children.Value.AsReadOnly();
+        public IReadOnlyCollection<Guid> Parents =>_parents.AsReadOnly();
+        public IReadOnlyCollection<Guid> Children => _children.AsReadOnly();
 
         public ThingEventManager EventManager { get; }
         public BehaviorManager BehaviorManager { get; }
 
+        public Guid Id
+        {
+            get => _thingData.Id;
+            set => _thingData.Id = value;
+        }
+
+        public string Name
+        {
+            get => _thingData.Name;
+            set => _thingData.Name = value;
+        }
+
+        public string FullName
+        {
+            get => _thingData.FullName;
+            set => _thingData.FullName = value;
+        }
+
+        public string Description
+        {
+            get => _thingData.Description;
+            set => _thingData.Description = value;
+        }
+
+        public string Title
+        {
+            get => _thingData.Title;
+            set => _thingData.Title = value;
+        }
+
+        public string SingularPrefix
+        {
+            get => _thingData.SingularPrefix;
+            set => _thingData.SingularPrefix = value;
+        }
+
+        public string PluralSuffix
+        {
+            get => _thingData.PluralSuffix;
+            set => _thingData.PluralSuffix = value;
+        }
+
+        public int MaxChildren
+        {
+            get => _thingData.MaxChildren;
+            set => _thingData.MaxChildren = value;
+        }
+
+        public int MaxParents
+        {
+            get => _thingData.MaxParents;
+            set => _thingData.MaxParents = value;
+        }
+
         public bool AddChild(IThing childThing)
         {
-            lock (Lock)
+            lock (this)
             {
-                lock (childThing.Lock)
+                lock (childThing)
                 {
-                    // If the thing already has a parent, ensure we have permission to continue.
-                    // Presence of MultipleParentsBehavior means we can always add more parents, but
-                    // if it's not present, we have to see if removal would be accepted first.
-                    RemoveChildEvent removalRequest = null;
-
-                    if (childThing.Info.MaxParents > 1)
+                    if (!_children.Contains(childThing.Id))
                     {
-                        foreach (var parent in childThing.Parents)
+                        if (_children.Count < MaxChildren)
                         {
-                            removalRequest = parent.RequestChildRemoval(childThing);
-
-                            if (removalRequest.IsCanceled)
+                            if (!childThing.Parents.Contains(this.Id))
                             {
-                                return false;
+                                // Add this a the parent of the child
+                                if (childThing.AddParent(this))
+                                {
+                                    // Add child id to children collection
+                                    _children.Add(childThing.Id);
+
+                                    return true;
+                                }
                             }
                         }
                     }
-
-                    var addRequest = this.RequestChildAdd(childThing);
-                    if (addRequest.IsCanceled)
-                    {
-                        return false;
-                    }
-
-                    // If we got this far, both removal (if needed) and add requests were accepted, so 
-                    // perform both now and send the confirmation events for any listeners.  Removal is
-                    // first, since we don't want to risk accidentally removing from the new parent, etc.
-                    if (removalRequest != null)
-                    {
-                        foreach (var parent in childThing.Parents)
-                        {
-                            parent.PerformChildRemoval(
-                                childThing,
-                                removalRequest);
-                        }
-                    }
-
-                    PerformChildAdd(
-                        childThing, 
-                        addRequest);
                 }
             }
 
-            return true;
+            return false;
         }
 
-        public bool RemoveChild(IThing thing)
+        public bool RemoveChild(IThing oldChild)
         {
             // No two threads may add/remove any combination of the parent/sub-thing at the same time,
             // in order to prevent race conditions resulting in thing-disconnection/duplication/etc.
-            lock (Lock)
+            lock (this)
             {
-                lock (thing.Lock)
+                lock (oldChild)
                 {
-                    if (Children.Contains(thing))
+                    if (oldChild.RemoveParent(this))
                     {
-                        var removalRequest = this.RequestChildRemoval(thing);
-                        return PerformChildRemoval(thing, removalRequest);
+                        _children.Remove(oldChild.Id);
+
+                        return true;
                     }
                 }
             }
@@ -130,111 +140,92 @@ namespace AudioAdventurer.Library.Common.Models
             return false;
         }
 
-        public bool PerformChildAdd(
-            IThing thingToAdd, 
-            AddChildEvent addEvent)
+        public bool AddParent(IThing newParent)
         {
-            // If an existing thing is stackable with the added thing, combine the new
-            // thing into the existing thing instead of simply adding it.
-            foreach (IThing currentThing in Children)
+            if (!_parents.Contains(newParent.Id))
             {
-                if (thingToAdd.CanStack(currentThing))
+                // If the number of parents allowed is not yet reached
+                // just add the new parent
+                if (_parents.Count < MaxParents)
                 {
-                    currentThing.Combine(thingToAdd);
+                    _parents.Add(newParent.Id);
                     return true;
                 }
-            }
 
-            // The item cannot be combined to an existing stack,
-            // so add the item as a child of the specified parent.
-            var children = _children.Value.ToList();
-            if (!children.Contains(thingToAdd))
-            {
-                children.Add(thingToAdd);
-            }
+                // If there is already one parent and
+                // max parents is one.  remove this item
+                // from the parent
+                if (MaxParents == 1
+                    && _parents.Count == 1)
+                {
+                    var oldParentId = _parents.First();
 
-            thingToAdd.PerformParentAdd(this);
+                    var oldParent = _thingService.GetThing(oldParentId);
+                    if (oldParent != null)
+                    {
+                        if (oldParent.Children.Contains(this.Id))
+                        {
+                            // Remove the parent from this
+                            _parents.Remove(oldParentId);
 
-            EventManager.OnMovementEvent(
-                addEvent, 
-                EventScope.SelfDown);
-            return true;
-        }
+                            // Remove this from the parent
+                            if (oldParent.RemoveChild(this))
+                            {
+                                // Now add this to the new parent
+                                newParent.AddChild(this);
 
-        public bool PerformChildRemoval(
-            IThing thingToRemove, 
-            RemoveChildEvent removalEvent)
-        {
-            if (removalEvent.IsCanceled)
-            {
+                                // Add the parent to this
+                                _parents.Add(newParent.Id);
+
+                                return true;
+                            }
+
+                            // Couldn't remove child from parent
+                            return false;
+                        }
+
+                        // Not there so nothing to do
+                        return true;
+                    }
+                }
+
+                // More than one parent is allowed,
+                // and we have reached the limit of parents
+                // so we don't know which parent to replace
+                // or what to do.  So we do nothing
                 return false;
             }
 
-            // Send the removal event.
-            EventManager.OnMovementEvent(
-                removalEvent, 
-                EventScope.SelfDown);
-
-            var children = _children.Value;
-
-            // If the thing to remove was in our Children collection, remove it.
-            if (children.Contains(thingToRemove))
-            {
-                children.Remove(thingToRemove);
-            }
-
-            thingToRemove.PerformParentRemoval(this);
-
-            return true;
+            // Can only add a parent once
+            return false;
         }
 
-        public bool PerformParentAdd(
-            IThing parentToAdd)
+        public bool RemoveParent(IThing oldParent)
         {
-            var parents = _parents.Value;
-
-            if (!parents.Contains(parentToAdd))
+            lock (this)
             {
-                parents.Add(parentToAdd);
-            }
-
-            return true;
-        }
-
-
-        public bool PerformParentRemoval(
-            IThing parentToRemove)
-        {
-            var parents = _parents.Value;
-
-            if (parents.Contains(parentToRemove))
-            {
-                parents.Remove(parentToRemove);
-            }
-
-            return true;
-        }
-
-        public IThing Combine(IThing thing)
-        {
-            lock (Lock)
-            {
-                lock (thing.Lock)
+                lock (oldParent)
                 {
-                    if (!CanStack(thing))
+                    if (_parents.Contains(oldParent.Id))
                     {
-                        // Return the full original (stack of) thing as the unstacked remainder.
-                        return thing;
-                    }
+                        if (oldParent.Children.Contains(this.Id))
+                        {
+                            oldParent.RemoveChild(this);
+                        }
 
-                    return null;
+                        _parents.Remove(oldParent.Id);
+                    }
+                    
+                    return true;
                 }
             }
         }
 
-        public bool CanStack(IThing thing)
+
+        public IThingData GetThingData()
         {
-            return false;
+            return _thingData;
         }
+
     }
 }
