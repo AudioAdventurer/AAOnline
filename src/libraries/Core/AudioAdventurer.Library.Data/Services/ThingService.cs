@@ -79,16 +79,21 @@ namespace AudioAdventurer.Library.Data.Services
                 _thingRepo.Save(thingData);
 
                 // Save the Behavior Data
-
-                //TODO
-
+                var behaviors = thing.BehaviorManager.AllBehaviors;
+                foreach (var behavior in behaviors)
+                {
+                    if (behavior.GetProperties() is BehaviorData behaviorData)
+                    {
+                        _behaviorRepo.Save(behaviorData);
+                    }
+                }
 
                 // Remove any existing relationships.
                 // Not trying to match up at moment
                 _relationshipRepo.DeleteParents(thingData.Id);
                 _relationshipRepo.DeleteChildren(thingData.Id);
 
-                // Now save them back
+                // Now save back parents
                 foreach (var parentId in thing.Parents)
                 {
                     var relationship = new RelationshipData
@@ -100,6 +105,7 @@ namespace AudioAdventurer.Library.Data.Services
                     _relationshipRepo.Save(relationship);
                 }
 
+                // Now save back children
                 foreach (var childId in thing.Children)
                 {
                     var relationship = new RelationshipData

@@ -16,8 +16,4 @@
     <ProjectReference Include="..\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\" />
-  </ItemGroup>
-
 </Project>
