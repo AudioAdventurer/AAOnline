@@ -17,5 +17,7 @@ namespace AudioAdventurer.Library.Common.Interfaces
         
         public bool AddParent(IThing parentToAdd);
         public bool RemoveParent(IThing parentToRemove);
+
+        public IThingData GetThingData();
     }
 }

@@ -58,5 +58,10 @@ namespace AudioAdventurer.Library.Data.Repos
         {
             Collection.Delete(id);
         }
+
+        public void DeleteMany(BsonExpression q)
+        {
+            Collection.DeleteMany(q);
+        }
     }
 }

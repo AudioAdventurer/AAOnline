@@ -221,11 +221,9 @@ namespace AudioAdventurer.Library.Common.Models
             }
         }
 
-
         public IThingData GetThingData()
         {
             return _thingData;
         }
-
     }
 }

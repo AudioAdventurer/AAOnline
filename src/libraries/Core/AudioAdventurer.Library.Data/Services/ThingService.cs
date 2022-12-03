@@ -4,24 +4,25 @@ using System.Linq;
 using AudioAdventurer.Library.Cache.Managers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
-using AudioAdventurer.Library.Data.Repos;
+using AudioAdventurer.Library.Data.Interfaces;
+using AudioAdventurer.Library.Data.Objects;
 
 namespace AudioAdventurer.Library.Data.Services
 {
     public class ThingService : IThingService
     {
-        private readonly BehaviorInfoRepo _behaviorRepo;
-        private readonly RelationshipRepo _relationshipRepo;
-        private readonly ThingInfoRepo _thingRepo;
+        private readonly IBehaviorInfoRepo _behaviorRepo;
+        private readonly IRelationshipRepo _relationshipRepo;
+        private readonly IThingInfoRepo _thingRepo;
 
         private readonly List<IBehaviorResolver> _behaviorResolvers;
         
         private readonly CacheManager<IThing> _thingCacheManager;
 
         public ThingService(
-            BehaviorInfoRepo behaviorRepo,
-            RelationshipRepo relationshipRepo,
-            ThingInfoRepo thingRepo,
+            IBehaviorInfoRepo behaviorRepo,
+            IRelationshipRepo relationshipRepo,
+            IThingInfoRepo thingRepo,
             IEnumerable<IBehaviorResolver> behaviorResolvers,
             CacheManager<IThing> thingCacheManager)
         {
@@ -72,7 +73,44 @@ namespace AudioAdventurer.Library.Data.Services
 
         public void SaveThing(IThing thing)
         {
+            if (thing.GetThingData() is ThingData thingData)
+            {
+                // Save the Thing Data
+                _thingRepo.Save(thingData);
 
+                // Save the Behavior Data
+
+                //TODO
+
+
+                // Remove any existing relationships.
+                // Not trying to match up at moment
+                _relationshipRepo.DeleteParents(thingData.Id);
+                _relationshipRepo.DeleteChildren(thingData.Id);
+
+                // Now save them back
+                foreach (var parentId in thing.Parents)
+                {
+                    var relationship = new RelationshipData
+                    {
+                        ParentId = parentId,
+                        ChildId = thingData.Id
+                    };
+
+                    _relationshipRepo.Save(relationship);
+                }
+
+                foreach (var childId in thing.Children)
+                {
+                    var relationship = new RelationshipData
+                    {
+                        ParentId = thingData.Id,
+                        ChildId = childId
+                    };
+
+                    _relationshipRepo.Save(relationship);
+                }
+            }
         }
 
         private IEnumerable<Guid> GetParentIds(Guid childId)

@@ -2,10 +2,11 @@
 using LiteDB;
 using System.Collections.Generic;
 using System;
+using AudioAdventurer.Library.Data.Interfaces;
 
 namespace AudioAdventurer.Library.Data.Repos
 {
-    public class BehaviorInfoRepo : AbstractRepo<BehaviorData>
+    public class BehaviorInfoRepo : AbstractRepo<BehaviorData>, IBehaviorInfoRepo
     {
         public BehaviorInfoRepo(LiteDatabase db) 
             : base(db)

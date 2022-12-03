@@ -2,10 +2,11 @@
 using LiteDB;
 using System.Collections.Generic;
 using System;
+using AudioAdventurer.Library.Data.Interfaces;
 
 namespace AudioAdventurer.Library.Data.Repos
 {
-    public class RelationshipRepo : AbstractRepo<RelationshipData>
+    public class RelationshipRepo : AbstractRepo<RelationshipData>, IRelationshipRepo
     {
         public RelationshipRepo(LiteDatabase db) 
             : base(db)
@@ -24,6 +25,16 @@ namespace AudioAdventurer.Library.Data.Repos
         public IEnumerable<RelationshipData> GetParents(Guid childId)
         {
             return GetMany(Query.EQ("ChildId", childId));
+        }
+
+        public void DeleteChildren(Guid parentId)
+        {
+            DeleteMany(Query.EQ("ParentId", parentId));
+        }
+
+        public void DeleteParents(Guid childId)
+        {
+            DeleteMany(Query.EQ("ChildId", childId));
         }
     }
 }
