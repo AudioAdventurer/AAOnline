@@ -128,16 +128,16 @@ namespace AudioAdventurer.Library.Common.Models
             {
                 lock (oldChild)
                 {
-                    if (oldChild.RemoveParent(this))
-                    {
-                        _children.Remove(oldChild.Id);
+                    _children.Remove(oldChild.Id);
 
-                        return true;
+                    if (oldChild.Parents.Contains(Id))
+                    {
+                        oldChild.RemoveParent(this);
                     }
+
+                    return true;
                 }
             }
-
-            return false;
         }
 
         public bool AddParent(IThing newParent)
@@ -208,14 +208,14 @@ namespace AudioAdventurer.Library.Common.Models
                 {
                     if (_parents.Contains(oldParent.Id))
                     {
-                        if (oldParent.Children.Contains(this.Id))
-                        {
-                            oldParent.RemoveChild(this);
-                        }
-
                         _parents.Remove(oldParent.Id);
                     }
-                    
+
+                    if (oldParent.Children.Contains(this.Id))
+                    {
+                        oldParent.RemoveChild(this);
+                    }
+
                     return true;
                 }
             }
