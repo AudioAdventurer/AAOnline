@@ -16,14 +16,20 @@ namespace AudioAdventurer.Library.Adventure.Builders
             var entrance = _thingService.BuildRoom("Cave Entrance", "You are standing outside of a cave entrance.");
             entrance.AddParent(area);
 
-            var tunnel = _thingService.BuildRoom("You are in a dark tunnel that heads down", "dark tunnel");
+            var tunnel = _thingService.BuildRoom("You are in a dark tunnel that heads further down or back up", "dark tunnel");
 
-            var caveEntrance = _thingService.BuildExit("Cave Enterance", out ExitBehavior exitBehavior);
+            var caveEntrance = _thingService.BuildExit("Cave Entrance", out ExitBehavior exitBehavior);
             caveEntrance.AddParent(entrance);
             caveEntrance.AddParent(tunnel);
             exitBehavior.AddDestination("Enter", tunnel.Id);
             exitBehavior.AddDestination("Exit", entrance.Id);
 
+            var cavern1 = _thingService.BuildRoom("Large Cavern", "You are in a large cavern.");
+            var cavern1Entrance = _thingService.BuildExit("Cavern Entrance", out ExitBehavior exit1Behavior);
+            cavern1Entrance.AddParent(tunnel);
+            cavern1Entrance.AddParent(cavern1);
+            exitBehavior.AddDestination("E", tunnel.Id);
+            exitBehavior.AddDestination("W", cavern1.Id);
         }
 
     }
