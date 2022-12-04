@@ -6,7 +6,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
 {
     public abstract class AbstractBehavior : IBehavior
     {
-        protected readonly object _lock = new object();
         protected IBehaviorData _behaviorData;
 
         protected AbstractBehavior(
@@ -37,7 +36,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
-        
         protected virtual void OnAddBehavior()
         {
         }

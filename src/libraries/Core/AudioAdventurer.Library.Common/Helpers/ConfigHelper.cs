@@ -20,7 +20,10 @@ public static class ConfigHelper
             {
                 if (tempKey.StartsWith(prefix))
                 {
-                    var configKey = tempKey.Substring(prefix.Length);
+                    var configKey = tempKey
+                        .Substring(prefix.Length)
+                        .ToUpper();
+
                     var value = envVars[key] as string;
 
                     config.Values.Add(configKey, value);

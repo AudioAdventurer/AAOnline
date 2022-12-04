@@ -31,10 +31,30 @@ namespace AudioAdventurer.Library.Common.Models
                 behaviors);
         }
 
-        public IReadOnlyCollection<Guid> Parents =>_parents.AsReadOnly();
-        public IReadOnlyCollection<Guid> Children => _children.AsReadOnly();
+        public IReadOnlyCollection<Guid> Parents
+        {
+            get
+            {
+                lock (this)
+                {
+                    return _parents.AsReadOnly();
+                }
+            }
+        }
+
+        public IReadOnlyCollection<Guid> Children
+        {
+            get
+            {
+                lock (this)
+                {
+                    return _children.AsReadOnly();
+                }
+            }
+        }
 
         public ThingEventManager EventManager { get; }
+
         public BehaviorManager BehaviorManager { get; }
 
         public Guid Id
@@ -47,12 +67,6 @@ namespace AudioAdventurer.Library.Common.Models
         {
             get => _thingData.Name;
             set => _thingData.Name = value;
-        }
-
-        public string FullName
-        {
-            get => _thingData.FullName;
-            set => _thingData.FullName = value;
         }
 
         public string Description
@@ -142,62 +156,65 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool AddParent(IThing newParent)
         {
-            if (!_parents.Contains(newParent.Id))
+            lock (this)
             {
-                // If the number of parents allowed is not yet reached
-                // just add the new parent
-                if (_parents.Count < MaxParents)
+                if (!_parents.Contains(newParent.Id))
                 {
-                    _parents.Add(newParent.Id);
-                    return true;
-                }
-
-                // If there is already one parent and
-                // max parents is one.  remove this item
-                // from the parent
-                if (MaxParents == 1
-                    && _parents.Count == 1)
-                {
-                    var oldParentId = _parents.First();
-
-                    var oldParent = _thingService.GetThing(oldParentId);
-                    if (oldParent != null)
+                    // If the number of parents allowed is not yet reached
+                    // just add the new parent
+                    if (_parents.Count < MaxParents)
                     {
-                        if (oldParent.Children.Contains(this.Id))
-                        {
-                            // Remove the parent from this
-                            _parents.Remove(oldParentId);
-
-                            // Remove this from the parent
-                            if (oldParent.RemoveChild(this))
-                            {
-                                // Now add this to the new parent
-                                newParent.AddChild(this);
-
-                                // Add the parent to this
-                                _parents.Add(newParent.Id);
-
-                                return true;
-                            }
-
-                            // Couldn't remove child from parent
-                            return false;
-                        }
-
-                        // Not there so nothing to do
+                        _parents.Add(newParent.Id);
                         return true;
                     }
+
+                    // If there is already one parent and
+                    // max parents is one.  remove this item
+                    // from the parent
+                    if (MaxParents == 1
+                        && _parents.Count == 1)
+                    {
+                        var oldParentId = _parents.First();
+
+                        var oldParent = _thingService.GetThing(oldParentId);
+                        if (oldParent != null)
+                        {
+                            if (oldParent.Children.Contains(this.Id))
+                            {
+                                // Remove the parent from this
+                                _parents.Remove(oldParentId);
+
+                                // Remove this from the parent
+                                if (oldParent.RemoveChild(this))
+                                {
+                                    // Now add this to the new parent
+                                    newParent.AddChild(this);
+
+                                    // Add the parent to this
+                                    _parents.Add(newParent.Id);
+
+                                    return true;
+                                }
+
+                                // Couldn't remove child from parent
+                                return false;
+                            }
+
+                            // Not there so nothing to do
+                            return true;
+                        }
+                    }
+
+                    // More than one parent is allowed,
+                    // and we have reached the limit of parents
+                    // so we don't know which parent to replace
+                    // or what to do.  So we do nothing
+                    return false;
                 }
 
-                // More than one parent is allowed,
-                // and we have reached the limit of parents
-                // so we don't know which parent to replace
-                // or what to do.  So we do nothing
+                // Can only add a parent once
                 return false;
             }
-
-            // Can only add a parent once
-            return false;
         }
 
         public bool RemoveParent(IThing oldParent)
@@ -223,7 +240,10 @@ namespace AudioAdventurer.Library.Common.Models
 
         public IThingData GetThingData()
         {
-            return _thingData;
+            lock (this)
+            {
+                return _thingData;
+            }
         }
     }
 }

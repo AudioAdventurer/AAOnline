@@ -1,7 +1,4 @@
-﻿
-using AudioAdventurer.Library.Common.Constants;
-using AudioAdventurer.Library.Common.Events;
-using AudioAdventurer.Library.Common.Interfaces;
+﻿using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Helpers
 {
@@ -19,6 +16,5 @@ namespace AudioAdventurer.Library.Common.Helpers
         {
             return thing.BehaviorManager.FindFirst<T>() != null;
         }
-
     }
 }

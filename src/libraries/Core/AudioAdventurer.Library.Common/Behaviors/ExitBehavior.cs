@@ -27,29 +27,24 @@ namespace AudioAdventurer.Library.Common.Behaviors
         public override void SetProperties(
             Dictionary<string, string> properties)
         {
-            lock (_lock)
+            lock (this)
             {
                 _destinations.Clear();
-
-                if (properties.ContainsKey("destinations"))
-                {
-                    string json = properties["destinations"];
-                    var temp = JsonHelper.Deserialize<List<ExitDestination>>(json);
-                    _destinations.AddRange(temp);
-                }
+                var destinations = properties.GetSerializedJsonObjects<ExitDestination>("Destinations");
+                _destinations.AddRange(destinations);
             }
         }
 
         public override IBehaviorData GetProperties()
         {
-            lock (_lock)
+            lock (this)
             {
                 var behaviorData = _behaviorData;
                 behaviorData.Properties.Clear();
 
-                behaviorData.Properties.Add(
+                behaviorData.Properties.SetSerializedJsonObjects(
                     "destinations",
-                    JsonHelper.Serialize(_destinations));                
+                    _destinations);
 
                 return behaviorData;
             }
@@ -61,7 +56,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
             movementCommand = DirectionHelper.NormalizeDirection(movementCommand);
 
-            lock (_lock)
+            lock (this)
             {
                 ExitDestination existing = null;
                 foreach (var existingDestination in _destinations)
@@ -92,7 +87,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
-        public bool MoveThrough(Thing thingToMove)
+        public bool MoveThrough(
+            Thing thingToMove)
         {
             // If the thing isn't currently mobile, bail.
             var movableBehavior = thingToMove.FindBehavior<MovableBehavior>();

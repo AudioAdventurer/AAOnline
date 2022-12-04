@@ -2,7 +2,6 @@
 using System.Linq;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
-using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Senses;
 
@@ -23,7 +22,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
         public override void SetProperties(
             Dictionary<string, string> behaviorInfo)
         {
-            
         }
 
         public override IBehaviorData GetProperties()

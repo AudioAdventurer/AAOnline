@@ -46,5 +46,12 @@ namespace AudioAdventurer.Library.Testing.Helpers
         {
             return RandomNumberGenerator.GetInt32(min, max);
         }
+
+        public static double GetRandomDouble(int min, int max)
+        {
+            var random = new Random();
+
+            return random.NextDouble() * (max - min) + min;
+        }
     }
 }

@@ -4,8 +4,6 @@
     {
         string Name { get; set; }
 
-        string FullName { get; set; }
-
         string Description { get; set; }
 
         string Title { get; set; }

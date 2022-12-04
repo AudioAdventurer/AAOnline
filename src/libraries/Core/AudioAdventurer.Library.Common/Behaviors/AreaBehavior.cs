@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Behaviors
@@ -12,14 +11,15 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
         }
         
-        public override void SetProperties(Dictionary<string, string> behaviorInfo)
+        public override void SetProperties(
+            Dictionary<string, string> behaviorInfo)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override IBehaviorData GetProperties()
         {
-            throw new NotImplementedException();
+            return _behaviorData;
         }
     }
 }

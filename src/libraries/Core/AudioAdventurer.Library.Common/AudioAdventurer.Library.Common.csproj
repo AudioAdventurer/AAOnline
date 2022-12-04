@@ -16,7 +16,6 @@
     <Folder Include="Actions\Item\" />
     <Folder Include="Actions\Travel\" />
     <Folder Include="Actions\Player\" />
-    <Folder Include="Builders\" />
     <Folder Include="Modules\" />
   </ItemGroup>
 

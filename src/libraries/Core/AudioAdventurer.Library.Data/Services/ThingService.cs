@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioAdventurer.Library.Cache.Managers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Data.Interfaces;
@@ -17,14 +16,14 @@ namespace AudioAdventurer.Library.Data.Services
 
         private readonly List<IBehaviorResolver> _behaviorResolvers;
         
-        private readonly CacheManager<IThing> _thingCacheManager;
+        private readonly ICacheManager<IThing> _thingCacheManager;
 
         public ThingService(
             IBehaviorInfoRepo behaviorRepo,
             IRelationshipRepo relationshipRepo,
             IThingInfoRepo thingRepo,
             IEnumerable<IBehaviorResolver> behaviorResolvers,
-            CacheManager<IThing> thingCacheManager)
+            ICacheManager<IThing> thingCacheManager)
         {
             _behaviorRepo = behaviorRepo;
             _relationshipRepo = relationshipRepo;

@@ -5,7 +5,7 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Cache.Managers
 {
-    public class CacheManager<T>
+    public class CacheManager<T>: ICacheManager<T>
         where T : IIdentifiableObject
     {
         private readonly Dictionary<Guid, CacheObject<T>> _cache;

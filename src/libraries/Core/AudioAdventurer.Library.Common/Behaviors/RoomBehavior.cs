@@ -1,5 +1,4 @@
 ﻿using AudioAdventurer.Library.Common.Interfaces;
-using System;
 using System.Collections.Generic;
 
 namespace AudioAdventurer.Library.Common.Behaviors
@@ -19,7 +18,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
         public override IBehaviorData GetProperties()
         {
-            return this._behaviorData;
+            return _behaviorData;
         }
     }
 }
