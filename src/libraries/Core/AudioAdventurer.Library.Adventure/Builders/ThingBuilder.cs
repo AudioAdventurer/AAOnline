@@ -9,17 +9,79 @@ namespace AudioAdventurer.Library.Adventure.Builders
 {
     public static class ThingBuilder
     {
+        public static IThing BuildWorld(
+            this IThingService thingService,
+            string name,
+            string description)
+        {
+            var worldInfo = new ThingData()
+            {
+                Name = name,
+                Description = description
+            };
+
+            var behaviorInfo = new BehaviorData
+            {
+                BehaviorType = nameof(WorldBehavior),
+                ParentId = worldInfo.Id
+            };
+
+            var worldBehavior = new WorldBehavior(behaviorInfo);
+            List<IBehavior> behaviors = new List<IBehavior> { worldBehavior };
+
+            var world = new Thing(
+                worldInfo,
+                behaviors,
+                new List<Guid>(),
+                new List<Guid>(),
+                thingService);
+
+            thingService.SaveThing(world);
+
+            return world;
+        }
+
+        public static IThing BuildArea(
+            this IThingService thingService,
+            string name,
+            string description)
+        {
+            var areaInfo = new ThingData()
+            {
+                Name = name,
+                Description = description
+            };
+
+            var behaviorInfo = new BehaviorData
+            {
+                BehaviorType = nameof(AreaBehavior),
+                ParentId = areaInfo.Id
+            };
+
+            var areaBehavior = new AreaBehavior(behaviorInfo);
+            List<IBehavior> behaviors = new List<IBehavior> { areaBehavior };
+
+            var area = new Thing(
+                areaInfo,
+                behaviors,
+                new List<Guid>(),
+                new List<Guid>(),
+                thingService);
+
+            thingService.SaveThing(area);
+
+            return area;
+        }
+
         public static IThing BuildRoom(
             this IThingService thingService,
             string name,
-            string description = null,
-            string fullName = null)
+            string description = null)
         {
             var roomInfo = new ThingData()
             {
                 Name = name,
                 Description = description,
-                FullName = fullName
             };
 
             var behaviorInfo = new BehaviorData
@@ -47,14 +109,12 @@ namespace AudioAdventurer.Library.Adventure.Builders
         public static IThing BuildMoveableItem(
             this IThingService thingService,
             string name,
-            string description = null,
-            string fullName = null)
+            string description = null)
         {
             var movableItemData = new ThingData()
             {
                 Name = name,
-                Description = description,
-                FullName = fullName
+                Description = description
             };
 
             var behaviorInfo = new BehaviorData
