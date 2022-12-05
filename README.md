@@ -3,8 +3,9 @@ AAOnline is a text based game engine designed to support a variety of play modes
 The primary game mode is intended to be audio based, but the system should support text playing.  The initial 
 intent is not to implement a telnet based play mode like you would find on a MUD.  
 
-This project draws from concepts defined in WheelMud.  Thanks to all contributors of that project for the
-work done over more than 10 years.
+This project draws from concepts and code defined in WheelMud.  Thanks to all contributors of that project for the
+work done over more than 10 years.  For more information on that project and it's contributors see
+https://github.com/DavidRieman/WheelMUD
 
 
 ## Server Implementations
