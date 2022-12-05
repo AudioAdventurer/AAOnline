@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Adventure\AudioAdventurer.Library.Adventure.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Client.Local\AudioAdventurer.Library.Client.Local.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Data\AudioAdventurer.Library.Data.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Testing\AudioAdventurer.Library.Testing.csproj" />
+  </ItemGroup>
+
+</Project>

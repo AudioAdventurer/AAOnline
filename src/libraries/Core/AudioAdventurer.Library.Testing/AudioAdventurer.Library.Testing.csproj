@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AudioAdventurer.Library.Cache\AudioAdventurer.Library.Cache.csproj" />
+    <ProjectReference Include="..\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
+  </ItemGroup>
+
+</Project>
