@@ -8,9 +8,9 @@ work done over more than 10 years.  For more information on that project and it'
 https://github.com/DavidRieman/WheelMUD
 
 
-## Server Implementations
+## Server Implementation Plans
 
-1. Stand alone console app that can be used for testing in text mode.  
+1. Stand alone console app that can be used for testing in text mode.  (In progress)
 2. Web based User interface for playing in text mode.
 3. Alexa based implementation.
 4. Web based enhancements for audio playing.
