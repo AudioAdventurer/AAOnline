@@ -2,5 +2,15 @@
 
 public interface IActionInput
 {
-    
+    public string FullText { get; }
+
+    public string Noun { get; }
+
+    public string Tail { get; }
+
+    public ISession Session { get; }
+
+    public IThing Actor { get; }
+
+    public string[] Params { get; }
 }

@@ -1,11 +1,17 @@
 ﻿using System;
+using AudioAdventurer.Library.Common.EventArguments;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Sessions
 {
     public class Session : ISession
     {
-        public IThing Player { get; set; }
+        public Session(IThing player)
+        {
+            Player = player;
+        }
+
+        public IThing Player { get; }
 
         public event EventHandler UserInputReceived;
         public event EventHandler ServerOutputReceived;

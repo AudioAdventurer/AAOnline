@@ -34,7 +34,7 @@ namespace AudioAdventurer.Library.Common.Resolvers
 
             if (behaviorType.Equals(nameof(PlayerBehavior)))
             {
-                return new PlayerBehavior(behaviorInfo);
+                return new PlayerBehavior(behaviorInfo, _thingService);
             }
 
             if (behaviorType.Equals(nameof(RoomBehavior)))

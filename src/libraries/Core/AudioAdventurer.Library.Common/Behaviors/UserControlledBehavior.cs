@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AudioAdventurer.Library.Common.Interfaces;
+﻿using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Sessions;
 
 namespace AudioAdventurer.Library.Common.Behaviors
@@ -13,12 +12,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
         }
 
         public Session Session { get; set; }
-
-
-        public override void SetProperties(Dictionary<string, string> behaviorInfo)
-        {
-            
-        }
 
         public override IBehaviorData GetProperties()
         {

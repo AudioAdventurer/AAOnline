@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Interfaces;
@@ -17,11 +16,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
             : base(behaviorInfo)
         {
             _thingService = thingService;
-        }
-
-        public override void SetProperties(
-            Dictionary<string, string> behaviorInfo)
-        {
         }
 
         public override IBehaviorData GetProperties()

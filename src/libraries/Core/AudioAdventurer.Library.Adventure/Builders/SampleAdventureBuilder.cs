@@ -5,7 +5,7 @@ namespace AudioAdventurer.Library.Adventure.Builders
 {
     public static class SampleAdventureBuilder
     {
-        public static void BuildAdventure(
+        public static IThing BuildAdventure(
             IThingService _thingService)
         {
             var world = _thingService.BuildWorld("The World", "The world we live in");
@@ -30,7 +30,8 @@ namespace AudioAdventurer.Library.Adventure.Builders
             cavern1Entrance.AddParent(cavern1);
             exitBehavior.AddDestination("E", tunnel.Id);
             exitBehavior.AddDestination("W", cavern1.Id);
-        }
 
+            return entrance;
+        }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using AudioAdventurer.Library.Common.Interfaces;
 
-namespace AudioAdventurer.Library.Common.Sessions
+namespace AudioAdventurer.Library.Common.EventArguments
 {
-    public class ServerOutputReceivedEventArgs 
+    public class UserInputReceivedEventArgs
         : EventArgs
     {
-        public string ServerOutput { get; set; }
+        public string Command { get; set; }
         public ISession Session { get; set; }
     }
 }

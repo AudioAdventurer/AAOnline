@@ -22,12 +22,14 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
             _destinations = new List<ExitDestination>();
             _thingService = thingService;
+
+            SetProperties(_behaviorData.Properties);
         }
 
-        public override void SetProperties(
+        public void SetProperties(
             Dictionary<string, string> properties)
         {
-            lock (this)
+            lock (_lock)
             {
                 _destinations.Clear();
                 var destinations = properties.GetSerializedJsonObjects<ExitDestination>("Destinations");
@@ -37,7 +39,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
         public override IBehaviorData GetProperties()
         {
-            lock (this)
+            lock (_lock)
             {
                 var behaviorData = _behaviorData;
                 behaviorData.Properties.Clear();
@@ -56,7 +58,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
             movementCommand = DirectionHelper.NormalizeDirection(movementCommand);
 
-            lock (this)
+            lock (_lock)
             {
                 ExitDestination existing = null;
                 foreach (var existingDestination in _destinations)

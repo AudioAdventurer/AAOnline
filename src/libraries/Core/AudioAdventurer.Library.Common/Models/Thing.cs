@@ -12,6 +12,7 @@ namespace AudioAdventurer.Library.Common.Models
         private readonly List<Guid> _children;
         private readonly List<Guid> _parents;
         private readonly IThingService _thingService;
+        private readonly object _lock;
 
         public Thing(
             IThingData data,
@@ -29,13 +30,14 @@ namespace AudioAdventurer.Library.Common.Models
             BehaviorManager = new BehaviorManager(
                 this,
                 behaviors);
+            _lock = new object();
         }
 
         public IReadOnlyCollection<Guid> Parents
         {
             get
             {
-                lock (this)
+                lock (_lock)
                 {
                     return _parents.AsReadOnly();
                 }
@@ -46,7 +48,7 @@ namespace AudioAdventurer.Library.Common.Models
         {
             get
             {
-                lock (this)
+                lock (_lock)
                 {
                     return _children.AsReadOnly();
                 }
@@ -107,7 +109,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool AddChild(IThing childThing)
         {
-            lock (this)
+            lock (_lock)
             {
                 lock (childThing)
                 {
@@ -138,7 +140,7 @@ namespace AudioAdventurer.Library.Common.Models
         {
             // No two threads may add/remove any combination of the parent/sub-thing at the same time,
             // in order to prevent race conditions resulting in thing-disconnection/duplication/etc.
-            lock (this)
+            lock (_lock)
             {
                 lock (oldChild)
                 {
@@ -156,7 +158,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool AddParent(IThing newParent)
         {
-            lock (this)
+            lock (_lock)
             {
                 if (!_parents.Contains(newParent.Id))
                 {
@@ -219,7 +221,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public bool RemoveParent(IThing oldParent)
         {
-            lock (this)
+            lock (_lock)
             {
                 lock (oldParent)
                 {
@@ -240,7 +242,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public IThingData GetThingData()
         {
-            lock (this)
+            lock (_lock)
             {
                 return _thingData;
             }

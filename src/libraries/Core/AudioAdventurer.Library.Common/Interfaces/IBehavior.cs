@@ -7,9 +7,7 @@ namespace AudioAdventurer.Library.Common.Interfaces
         public IThing Parent { get; }
 
         public void SetParent(IThing parent);
-
-        public void SetProperties(Dictionary<string, string> behaviorInfo);
-
+        
         public IBehaviorData GetProperties();
     }
 }

@@ -4,6 +4,7 @@ using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Data.Objects;
+using AudioAdventurer.Library.Data.Repos;
 
 namespace AudioAdventurer.Library.Adventure.Builders
 {
@@ -160,6 +161,38 @@ namespace AudioAdventurer.Library.Adventure.Builders
             List<IBehavior> behaviors = new List<IBehavior> { exitBehavior };
             var exit = new Thing(
                 exitInfo, 
+                behaviors,
+                new List<Guid>(),
+                new List<Guid>(),
+                thingService);
+
+            thingService.SaveThing(exit);
+
+            return exit;
+        }
+
+        public static IThing BuildPlayer(
+            this IThingService thingService,
+            string name,
+            out PlayerBehavior playerBehavior)
+        {
+            var playerInfo = new ThingData
+            {
+                Name = name,
+                MaxParents = 1
+            };
+
+            var behaviorInfo = new BehaviorData
+            {
+                BehaviorType = nameof(PlayerBehavior),
+                ParentId = playerInfo.Id
+            };
+            playerBehavior = new PlayerBehavior(behaviorInfo, thingService);
+
+            List<IBehavior> behaviors = new List<IBehavior> { playerBehavior };
+
+            var exit = new Thing(
+                playerInfo,
                 behaviors,
                 new List<Guid>(),
                 new List<Guid>(),

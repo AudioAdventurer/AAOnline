@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Behaviors
 {
     public abstract class AbstractBehavior : IBehavior
     {
-        protected IBehaviorData _behaviorData;
+        protected readonly object _lock;
+        protected readonly IBehaviorData _behaviorData;
 
         protected AbstractBehavior(
             IBehaviorData behaviorInfo)
         {
             Id = behaviorInfo.Id;
-            SetProperties(behaviorInfo.Properties);
+            _behaviorData = behaviorInfo;
+            _lock = new object();
         }
 
         public Guid Id { get; set; }
@@ -44,8 +45,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
         }
 
-        public abstract void SetProperties(Dictionary<string, string> behaviorInfo);
-        
         public abstract IBehaviorData GetProperties();
     }
 }

@@ -29,7 +29,7 @@ namespace AudioAdventurer.Library.Common.Events
                 var userControlledBehavior = ActiveThing.FindBehavior<UserControlledBehavior>();
                 userControlledBehavior?
                     .Session?
-                    .WriteLine(cancelMessage);
+                    .WriteServerOutput(cancelMessage);
 
                 _sentCancelMessage = true;
             }

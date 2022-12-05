@@ -4,7 +4,7 @@ namespace AudioAdventurer.Library.Common.Interfaces;
 
 public interface ISession
 {
-    public IThing Player { get; set; }
+    public IThing Player { get; }
 
     public event EventHandler UserInputReceived;
     public event EventHandler ServerOutputReceived;

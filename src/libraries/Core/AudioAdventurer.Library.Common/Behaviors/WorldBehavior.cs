@@ -1,5 +1,4 @@
 ﻿using AudioAdventurer.Library.Common.Interfaces;
-using System.Collections.Generic;
 
 namespace AudioAdventurer.Library.Common.Behaviors
 {
@@ -11,11 +10,6 @@ namespace AudioAdventurer.Library.Common.Behaviors
         {
         }
 
-
-        public override void SetProperties(Dictionary<string, string> behaviorInfo)
-        {
-            
-        }
 
         public override IBehaviorData GetProperties()
         {

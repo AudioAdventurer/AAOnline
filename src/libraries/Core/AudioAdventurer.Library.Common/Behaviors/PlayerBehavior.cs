@@ -1,19 +1,17 @@
 ﻿using AudioAdventurer.Library.Common.Interfaces;
-using System.Collections.Generic;
 
 namespace AudioAdventurer.Library.Common.Behaviors
 {
     public class PlayerBehavior : AbstractBehavior
     {
-        public PlayerBehavior(IBehaviorData behaviorInfo)
+        private IThingService _thingService;
+
+        public PlayerBehavior(
+            IBehaviorData behaviorInfo,
+            IThingService thingService)
             : base(behaviorInfo)
         {
-        }
-        
-        public override void SetProperties(
-            Dictionary<string, string> behaviorInfo)
-        {
-            
+            _thingService = thingService;
         }
 
         public override IBehaviorData GetProperties()
