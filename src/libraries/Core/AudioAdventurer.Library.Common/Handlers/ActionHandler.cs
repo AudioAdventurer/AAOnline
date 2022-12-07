@@ -2,15 +2,15 @@
 using System.Linq;
 using AudioAdventurer.Library.Common.Interfaces;
 
-namespace AudioAdventurer.Library.Common.Managers
+namespace AudioAdventurer.Library.Common.Handlers
 {
-    public class ActionManager : IActionManager
+    public class ActionHandler : IActionHandler
     {
         private readonly List<IGameAction> _actions;
         private Dictionary<string, IGameAction> _actionsByPrimary;
         private Dictionary<string, IGameAction> _actionsByAlias;
 
-        public ActionManager(
+        public ActionHandler(
             IEnumerable<IGameAction> actions)
         {
             _actions = actions.ToList();
@@ -24,7 +24,7 @@ namespace AudioAdventurer.Library.Common.Managers
 
         public void HandleAction(IActionInput actionInput)
         {
-            
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Managers;
 
@@ -27,7 +28,7 @@ namespace AudioAdventurer.Library.Common.Models
 
             _thingService = thingService;
             EventManager = new ThingEventManager(this);
-            BehaviorManager = new BehaviorManager(
+            BehaviorManager = new BehaviorHandler(
                 this,
                 behaviors);
             _lock = new object();
@@ -57,7 +58,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public ThingEventManager EventManager { get; }
 
-        public BehaviorManager BehaviorManager { get; }
+        public BehaviorHandler BehaviorManager { get; }
 
         public Guid Id
         {

@@ -11,7 +11,7 @@ namespace AudioAdventurer.Library.Common.Helpers
             string text)
         {
             var entry = new ServerOutputEntry(type, text);
-            output.OutputEntries.Add(entry);
+            output.Entries.Add(entry);
         }
 
         public static IServerOutput GetSimpleOutput(string text)

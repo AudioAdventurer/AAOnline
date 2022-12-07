@@ -10,4 +10,9 @@
     <ProjectReference Include="..\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

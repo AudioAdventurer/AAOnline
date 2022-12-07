@@ -5,15 +5,15 @@ namespace AudioAdventurer.Library.Common.Managers
 {
     public class CommandManager : ICommandManager
     {
-        private readonly IActionManager _actionManager;
+        private readonly IActionHandler _actionHandler;
         private bool _running;
         private Thread _thread;
         private IGameManager _gameManager;
 
         public CommandManager(
-            IActionManager actionManager)
+            IActionHandler actionHandler)
         {
-            _actionManager = actionManager;
+            _actionHandler = actionHandler;
         }
 
         public bool Running => _running;
@@ -38,7 +38,7 @@ namespace AudioAdventurer.Library.Common.Managers
 
             if (action != null)
             {
-                _actionManager.HandleAction(action);
+                _actionHandler.HandleAction(action);
             }
         }
 

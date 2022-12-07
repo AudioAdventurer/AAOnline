@@ -2,6 +2,7 @@
 using AudioAdventurer.Library.Common.Actions.Inform;
 using AudioAdventurer.Library.Common.Actions.Travel;
 using AudioAdventurer.Library.Common.Factories;
+using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Managers;
 using AudioAdventurer.Library.Testing.Services;
@@ -38,8 +39,8 @@ namespace AudioAdventurer.Apps.Console.Modules
             builder.RegisterType<CommandManager>()
                 .As<ICommandManager>();
 
-            builder.RegisterType<ActionManager>()
-                .As<IActionManager>();
+            builder.RegisterType<ActionHandler>()
+                .As<IActionHandler>();
 
             builder.RegisterType<Move>()
                 .As<IGameAction>();

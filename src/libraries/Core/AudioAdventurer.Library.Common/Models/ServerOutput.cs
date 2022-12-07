@@ -7,9 +7,9 @@ namespace AudioAdventurer.Library.Common.Models
     {
         public ServerOutput()
         {
-            OutputEntries = new List<IServerOutputEntry>();
+            Entries = new List<IServerOutputEntry>();
         }
 
-        public List<IServerOutputEntry> OutputEntries { get; }
+        public List<IServerOutputEntry> Entries { get; }
     }
 }

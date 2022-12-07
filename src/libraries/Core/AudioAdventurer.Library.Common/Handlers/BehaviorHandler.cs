@@ -2,13 +2,13 @@
 using System.Linq;
 using AudioAdventurer.Library.Common.Interfaces;
 
-namespace AudioAdventurer.Library.Common.Managers
+namespace AudioAdventurer.Library.Common.Handlers
 {
-    public class BehaviorManager 
+    public class BehaviorHandler : IBehaviorHandler
     {
         private readonly List<IBehavior> _managedBehaviors;
 
-        public BehaviorManager(
+        public BehaviorHandler(
             IThing parent,
             IEnumerable<IBehavior> behaviors = null)
         {
@@ -22,7 +22,7 @@ namespace AudioAdventurer.Library.Common.Managers
             {
                 _managedBehaviors = new List<IBehavior>();
             }
-            
+
         }
 
         public IThing Parent { get; }

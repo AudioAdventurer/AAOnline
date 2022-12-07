@@ -4,5 +4,5 @@ namespace AudioAdventurer.Library.Common.Interfaces;
 
 public interface IServerOutput
 {
-    public List<IServerOutputEntry> OutputEntries { get; }
+    public List<IServerOutputEntry> Entries { get; }
 }

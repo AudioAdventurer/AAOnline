@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Managers;
 
 namespace AudioAdventurer.Library.Common.Interfaces
@@ -7,7 +8,7 @@ namespace AudioAdventurer.Library.Common.Interfaces
     public interface IThing : IThingData
     {
         public ThingEventManager EventManager { get; }
-        public BehaviorManager BehaviorManager { get; }
+        public BehaviorHandler BehaviorManager { get; }
         
         public IReadOnlyCollection<Guid> Parents { get;  }
         public IReadOnlyCollection<Guid> Children { get; }

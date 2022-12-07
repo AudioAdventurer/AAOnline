@@ -1,6 +1,6 @@
 ﻿namespace AudioAdventurer.Library.Common.Interfaces
 {
-    public interface IActionManager
+    public interface IActionHandler
     {
         public void HandleAction(IActionInput actionInput);
     }
