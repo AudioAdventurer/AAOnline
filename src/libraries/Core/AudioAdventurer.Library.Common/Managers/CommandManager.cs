@@ -5,15 +5,15 @@ namespace AudioAdventurer.Library.Common.Managers
 {
     public class CommandManager : ICommandManager
     {
-        private readonly IThingService _thingService;
+        private readonly IActionManager _actionManager;
         private bool _running;
         private Thread _thread;
         private IGameManager _gameManager;
 
         public CommandManager(
-            IThingService thingService)
+            IActionManager actionManager)
         {
-            _thingService = thingService;
+            _actionManager = actionManager;
         }
 
         public bool Running => _running;
@@ -36,8 +36,10 @@ namespace AudioAdventurer.Library.Common.Managers
         {
             var action = _gameManager.DequeueAction();
 
-            //TODO Action processing
-            action?.Session?.WriteServerOutput($"You {action.FullText}");
+            if (action != null)
+            {
+                _actionManager.HandleAction(action);
+            }
         }
 
         public void Stop()

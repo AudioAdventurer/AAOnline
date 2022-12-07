@@ -120,9 +120,16 @@ namespace AudioAdventurer.Library.Common.Managers
         {
             if (e is UserInputReceivedEventArgs args)
             {
+                // TODO - Check for contextual commands
+                // rather than forcing "move east"
+                // allow user to just say "east" and 
+                // then add "move" to the command here.
+                // This should only be use for simple movement.
+
                 var action = new ActionInput(
                     args.Command,
-                    args.Session);
+                    args.Session,
+                    args.Actor);
 
                 EnqueueAction(action);
             }

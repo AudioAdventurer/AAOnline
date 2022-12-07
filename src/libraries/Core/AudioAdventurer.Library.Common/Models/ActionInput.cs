@@ -10,10 +10,11 @@ namespace AudioAdventurer.Library.Common.Models
     {
         public ActionInput(
             string fullText,
-            ISession session)
+            ISession session,
+            IThing actor)
         {
             Session = session;
-            Actor = session.Player;
+            Actor = actor;
             FullText = fullText;
 
             ParseText(fullText);

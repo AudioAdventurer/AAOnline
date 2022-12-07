@@ -17,7 +17,7 @@ namespace AudioAdventurer.Library.Common.Sessions
         public event EventHandler ServerOutputReceived;
 
         public void WriteServerOutput(
-            string output)
+            IServerOutput output)
         {
             var args = new ServerOutputReceivedEventArgs()
             {
@@ -33,7 +33,8 @@ namespace AudioAdventurer.Library.Common.Sessions
             var args = new UserInputReceivedEventArgs
             {
                 Command = command,
-                Session = this
+                Session = this,
+                Actor = Player
             };
 
             OnUserInputReceived(args);

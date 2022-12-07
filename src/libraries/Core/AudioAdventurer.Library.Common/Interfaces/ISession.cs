@@ -10,7 +10,7 @@ public interface ISession
     public event EventHandler ServerOutputReceived;
 
     public void WriteServerOutput(
-        string singleLineOutput);
+        IServerOutput output);
 
     public void ProcessUserInput(
         string command);

@@ -25,11 +25,13 @@ namespace AudioAdventurer.Library.Common.Events
             if (!string.IsNullOrEmpty(cancelMessage) 
                 && !_sentCancelMessage)
             {
+                var output = ServerOutputHelper.GetSimpleOutput(cancelMessage);
+
                 // Write up to one cancellation message directly to the user/initiator if appropriate.
                 var userControlledBehavior = ActiveThing.FindBehavior<UserControlledBehavior>();
                 userControlledBehavior?
                     .Session?
-                    .WriteServerOutput(cancelMessage);
+                    .WriteServerOutput(output);
 
                 _sentCancelMessage = true;
             }
