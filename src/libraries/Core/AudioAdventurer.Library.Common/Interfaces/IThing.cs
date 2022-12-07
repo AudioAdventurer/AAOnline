@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Handlers;
-using AudioAdventurer.Library.Common.Managers;
+using EventHandler = AudioAdventurer.Library.Common.Handlers.EventHandler;
 
 namespace AudioAdventurer.Library.Common.Interfaces
 {
     public interface IThing : IThingData
     {
-        public ThingEventManager EventManager { get; }
+        public EventHandler EventManager { get; }
         public BehaviorHandler BehaviorManager { get; }
         
         public IReadOnlyCollection<Guid> Parents { get;  }

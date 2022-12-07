@@ -5,13 +5,16 @@ using AudioAdventurer.Library.Common.Models;
 using System.Collections.Generic;
 using System;
 
-namespace AudioAdventurer.Library.Common.Managers
+namespace AudioAdventurer.Library.Common.Handlers
 {
-    public class ThingEventManager
+    /// <summary>
+    /// Used by Thing objects to dispatch events
+    /// </summary>
+    public class EventHandler
     {
         private readonly Thing _owner;
 
-        public ThingEventManager(Thing owner)
+        public EventHandler(Thing owner)
         {
             _owner = owner;
         }
@@ -33,37 +36,37 @@ namespace AudioAdventurer.Library.Common.Managers
         public event CancellableGameEventHandler MiscellaneousRequest;
 
         public void OnMovementEvent(
-            AbstractGameEvent e, 
+            AbstractGameEvent e,
             EventScope eventScope)
         {
 
         }
 
         public void OnMovementRequest(
-            CancellableGameEvent e, 
+            CancellableGameEvent e,
             EventScope eventScope)
         {
         }
 
         private void OnEvent(
-            Func<ThingEventManager, GameEventHandler> handlerSelector,
+            Func<EventHandler, GameEventHandler> handlerSelector,
             AbstractGameEvent e,
             EventScope eventScope)
         {
-            
+
         }
 
         private void OnRequest(
-            Func<ThingEventManager, CancellableGameEventHandler> handlerSelector, 
-            CancellableGameEvent e, 
+            Func<EventHandler, CancellableGameEventHandler> handlerSelector,
+            CancellableGameEvent e,
             EventScope eventScope)
         {
-            
+
         }
 
         private void OnRequest(
-            Func<ThingEventManager, CancellableGameEventHandler> handlerSelector, 
-            CancellableGameEvent e, 
+            Func<EventHandler, CancellableGameEventHandler> handlerSelector,
+            CancellableGameEvent e,
             bool cascadeEventToChildren)
         {
             // Build a request target queue which starts with our owner Thing and visits all it's Children.

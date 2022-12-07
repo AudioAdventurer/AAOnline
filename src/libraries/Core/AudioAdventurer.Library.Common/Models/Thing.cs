@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
-using AudioAdventurer.Library.Common.Managers;
+using EventHandler = AudioAdventurer.Library.Common.Handlers.EventHandler;
 
 namespace AudioAdventurer.Library.Common.Models
 {
@@ -27,7 +27,7 @@ namespace AudioAdventurer.Library.Common.Models
             _parents = parents.ToList();
 
             _thingService = thingService;
-            EventManager = new ThingEventManager(this);
+            EventManager = new EventHandler(this);
             BehaviorManager = new BehaviorHandler(
                 this,
                 behaviors);
@@ -56,7 +56,7 @@ namespace AudioAdventurer.Library.Common.Models
             }
         }
 
-        public ThingEventManager EventManager { get; }
+        public EventHandler EventManager { get; }
 
         public BehaviorHandler BehaviorManager { get; }
 

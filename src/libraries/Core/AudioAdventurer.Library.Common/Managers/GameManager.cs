@@ -7,6 +7,9 @@ using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Managers
 {
+    /// <summary>
+    /// The Game Manager controls the overall adventure
+    /// </summary>
     public class GameManager : IGameManager
     {
         private readonly object _lock;

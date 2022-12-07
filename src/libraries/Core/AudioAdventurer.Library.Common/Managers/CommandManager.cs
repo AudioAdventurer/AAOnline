@@ -3,6 +3,10 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Managers
 {
+    /// <summary>
+    /// The command manager is used by the game manager
+    /// to track and resolve game action
+    /// </summary>
     public class CommandManager : ICommandManager
     {
         private readonly IActionHandler _actionHandler;

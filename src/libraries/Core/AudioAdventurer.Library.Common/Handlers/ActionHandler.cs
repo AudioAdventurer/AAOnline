@@ -4,6 +4,10 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Handlers
 {
+    /// <summary>
+    /// Used by the Command Manager to handle and dispatch
+    /// game actions.
+    /// </summary>
     public class ActionHandler : IActionHandler
     {
         private readonly List<IGameAction> _actions;

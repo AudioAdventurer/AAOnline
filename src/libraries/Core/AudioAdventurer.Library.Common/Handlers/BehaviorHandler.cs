@@ -4,6 +4,9 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Handlers
 {
+    /// <summary>
+    /// Used by Thing objects to handle attached behaviors
+    /// </summary>
     public class BehaviorHandler : IBehaviorHandler
     {
         private readonly List<IBehavior> _managedBehaviors;
@@ -22,7 +25,6 @@ namespace AudioAdventurer.Library.Common.Handlers
             {
                 _managedBehaviors = new List<IBehavior>();
             }
-
         }
 
         public IThing Parent { get; }
