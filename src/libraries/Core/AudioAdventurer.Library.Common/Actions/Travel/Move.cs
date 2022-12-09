@@ -11,9 +11,9 @@ namespace AudioAdventurer.Library.Common.Actions.Travel
         public CommandCategory Category => CommandCategory.Travel;
         public string Description => "Travel from one room to another";
 
-        public void Execute(ActionInput actionInput)
+        public void Execute(IActionInput actionInput)
         {
-            
+            throw new System.NotImplementedException();
         }
     }
 }

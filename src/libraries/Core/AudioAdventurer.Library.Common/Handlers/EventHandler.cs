@@ -78,7 +78,7 @@ namespace AudioAdventurer.Library.Common.Handlers
             {
                 // If anything (like one of the thing's Behaviors) is subscribed to this request, send it there.
                 Thing currentRequestTarget = requestTargetQueue.Dequeue();
-                var handler = handlerSelector(currentRequestTarget.EventManager);
+                var handler = handlerSelector(currentRequestTarget.EventHandler);
                 if (handler != null)
                 {
                     handler(currentRequestTarget, e);

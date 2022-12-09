@@ -7,8 +7,12 @@ namespace AudioAdventurer.Library.Common.Interfaces
 {
     public interface IThing : IThingData
     {
-        public EventHandler EventManager { get; }
-        public BehaviorHandler BehaviorManager { get; }
+        public EventHandler EventHandler { get; }
+        public BehaviorHandler BehaviorHandler { get; }
+
+        public IThingService ThingService { get; }
+
+        public object Lock { get; }
         
         public IReadOnlyCollection<Guid> Parents { get;  }
         public IReadOnlyCollection<Guid> Children { get; }

@@ -5,14 +5,17 @@ namespace AudioAdventurer.Library.Common.Models
     public class ServerOutputEntry : IServerOutputEntry
     {
         public ServerOutputEntry(
-            string type, 
-            string text)
+            string textType, 
+            string text,
+            bool appendLine)
         {
-            Type = type;
+            TextType = textType;
             Text = text;
+            AppendLine = appendLine;
         }
 
-        public string Type { get; }
+        public string TextType { get; }
         public string Text { get; }
+        public bool AppendLine { get; }
     }
 }

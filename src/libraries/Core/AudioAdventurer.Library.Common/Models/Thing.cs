@@ -27,8 +27,8 @@ namespace AudioAdventurer.Library.Common.Models
             _parents = parents.ToList();
 
             _thingService = thingService;
-            EventManager = new EventHandler(this);
-            BehaviorManager = new BehaviorHandler(
+            EventHandler = new EventHandler(this);
+            BehaviorHandler = new BehaviorHandler(
                 this,
                 behaviors);
             _lock = new object();
@@ -56,9 +56,13 @@ namespace AudioAdventurer.Library.Common.Models
             }
         }
 
-        public EventHandler EventManager { get; }
+        public EventHandler EventHandler { get; }
 
-        public BehaviorHandler BehaviorManager { get; }
+        public BehaviorHandler BehaviorHandler { get; }
+
+        public IThingService ThingService => _thingService;
+
+        public object Lock => _lock;
 
         public Guid Id
         {

@@ -1,6 +1,7 @@
 ﻿using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
+using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Common.Senses;
 
 namespace AudioAdventurer.Library.Common.Events
@@ -25,7 +26,8 @@ namespace AudioAdventurer.Library.Common.Events
             if (!string.IsNullOrEmpty(cancelMessage) 
                 && !_sentCancelMessage)
             {
-                var output = ServerOutputHelper.GetSimpleOutput(cancelMessage);
+                var output = new ServerOutput();
+                output.AppendEntry(cancelMessage, true);
 
                 // Write up to one cancellation message directly to the user/initiator if appropriate.
                 var userControlledBehavior = ActiveThing.FindBehavior<UserControlledBehavior>();

@@ -1,5 +1,4 @@
 ﻿using AudioAdventurer.Library.Common.Constants;
-using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Interfaces;
 
@@ -13,5 +12,5 @@ public interface IGameAction
 
     public string Description { get; }
     
-    public void Execute(ActionInput actionInput);
+    public void Execute(IActionInput actionInput);
 }

@@ -2,8 +2,10 @@
 {
     public interface IServerOutputEntry
     {
-        public string Type { get; }
+        public string TextType { get; }
 
         public string Text { get; }
+
+        public bool AppendLine { get; }
     }
 }

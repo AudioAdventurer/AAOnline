@@ -1,4 +1,5 @@
-﻿using AudioAdventurer.Library.Common.Interfaces;
+﻿using AudioAdventurer.Library.Common.Constants;
+using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Helpers
@@ -7,18 +8,29 @@ namespace AudioAdventurer.Library.Common.Helpers
     {
         public static void AppendEntry(
             this IServerOutput output,
-            string type,
-            string text)
+            string textType,
+            string text,
+            bool appendLine)
         {
-            var entry = new ServerOutputEntry(type, text);
+            var entry = new ServerOutputEntry(
+                textType, 
+                text, 
+                appendLine);
+
             output.Entries.Add(entry);
         }
 
-        public static IServerOutput GetSimpleOutput(string text)
+        public static IServerOutput AppendEntry(
+            this IServerOutput output,
+            string text,
+            bool appendLine)
         {
-            var serverOutput = new ServerOutput();
-            serverOutput.AppendEntry("text", text);
-            return serverOutput;
+            output.AppendEntry(
+                ServerOutputDataTypes.Text, 
+                text, 
+                appendLine);
+
+            return output;
         }
     }
 }

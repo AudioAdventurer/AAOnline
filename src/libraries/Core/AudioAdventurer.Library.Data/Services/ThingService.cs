@@ -78,7 +78,7 @@ namespace AudioAdventurer.Library.Data.Services
                 _thingRepo.Save(thingData);
 
                 // Save the Behavior Data
-                var behaviors = thing.BehaviorManager.AllBehaviors;
+                var behaviors = thing.BehaviorHandler.AllBehaviors;
                 foreach (var behavior in behaviors)
                 {
                     if (behavior.GetProperties() is BehaviorData behaviorData)

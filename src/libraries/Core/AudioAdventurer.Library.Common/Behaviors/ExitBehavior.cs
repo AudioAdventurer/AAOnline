@@ -52,6 +52,17 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
+        public IReadOnlyList<ExitDestination> Destinations
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _destinations.AsReadOnly();
+                }
+            }
+        }
+
         public void AddDestination(
             string movementCommand,
             Guid destinationId)
@@ -147,6 +158,25 @@ namespace AudioAdventurer.Library.Common.Behaviors
             var arriveMessage = new SensoryMessage(SensoryType.Sight, 100, arriveContextMessage);
 
             return movableBehavior.Move(destination, Parent, leaveMessage, arriveMessage);
+        }
+
+        private ExitDestination GetDestinationFrom(Guid originId)
+        {
+            foreach (var destination in _destinations)
+            {
+                if (!destination.TargetId.Equals(originId))
+                {
+                    return destination;
+                }
+            }
+
+            return null;
+        }
+
+        public string GetExitCommandFrom(IThing fromLocation)
+        {
+            var destination = GetDestinationFrom(fromLocation.Id);
+            return destination?.ExitCommand;
         }
     }
 }

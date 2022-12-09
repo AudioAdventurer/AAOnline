@@ -78,13 +78,24 @@ namespace AudioAdventurer.Library.Common.Handlers
             }
         }
 
-        public U FindFirst<U>() where U : IBehavior
+        public T FindFirst<T>() 
+            where T : IBehavior
         {
             lock (_managedBehaviors)
             {
                 return _managedBehaviors
-                    .OfType<U>()
+                    .OfType<T>()
                     .FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<T> Find<T>() 
+            where T : IBehavior
+        {
+            lock (_managedBehaviors)
+            {
+                return _managedBehaviors
+                    .OfType<T>();
             }
         }
     }

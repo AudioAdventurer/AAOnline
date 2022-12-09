@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using AudioAdventurer.Library.Common.EventArguments;
+using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
 
@@ -123,16 +124,27 @@ namespace AudioAdventurer.Library.Common.Managers
         {
             if (e is UserInputReceivedEventArgs args)
             {
-                // TODO - Check for contextual commands
+                var command = args.Command;
+                var session = args.Session;
+                var actor = args.Actor;
+
                 // rather than forcing "move east"
                 // allow user to just say "east" and 
                 // then add "move" to the command here.
                 // This should only be use for simple movement.
+                // If further contextual commands arise, then a more generic
+                // behavior function like IsContextualCommand(command, out string commandType) 
+                // may be needed.
+                if (args.Actor.IsContextualDirectionCommand(command))
+                {
+                    //Ok so this is a contextual move command
+                    command = $"move {command.Trim()}";
+                }
 
                 var action = new ActionInput(
-                    args.Command,
-                    args.Session,
-                    args.Actor);
+                    command,
+                    session,
+                    actor);
 
                 EnqueueAction(action);
             }
