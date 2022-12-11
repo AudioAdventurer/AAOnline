@@ -30,6 +30,8 @@ namespace AudioAdventurer.Library.Common.Handlers
                 a => a.CommandAlias);
         }
 
+        public IEnumerable<IGameAction> Actions => _actions;
+
         public void HandleAction(IActionInput actionInput)
         {
             IGameAction gameAction = null;
@@ -45,14 +47,13 @@ namespace AudioAdventurer.Library.Common.Handlers
 
             if (gameAction != null)
             {
-                gameAction.Execute(actionInput);
+                gameAction.Execute(actionInput, this);
             }
             else
             {
                 var output = _writer.WriteUnknownCommand(actionInput.Action);
                 actionInput.Session.WriteServerOutput(output);
             }
-            
         }
     }
 }

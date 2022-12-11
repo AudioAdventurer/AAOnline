@@ -49,6 +49,9 @@ namespace AudioAdventurer.Apps.Console.Modules
             builder.RegisterType<Look>()
                 .As<IGameAction>();
 
+            builder.RegisterType<Help>()
+                .As<IGameAction>();
+
             builder.RegisterType<ServerOutputWriter>()
                 .As<IServerOutputWriter>();
         }

@@ -11,6 +11,29 @@ namespace AudioAdventurer.Library.Common.Writers
 {
     public class ServerOutputWriter : IServerOutputWriter
     {
+        public ServerOutput WriteHelpCommands(
+            IEnumerable<IGameAction> actions)
+        {
+            var serverOutput = new ServerOutput();
+
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.ListHeader,
+                "Available commands:",
+                true);
+
+            foreach (var action in actions)
+            {
+                string text = $"{action.Command} ({action.CommandAlias}): {action.Description}";
+
+                serverOutput.AppendEntry(
+                    ServerOutputDataTypes.ListItem,
+                    text,
+                    true);
+            }
+
+            return serverOutput;
+        }
+
         public ServerOutput WriteUnknownCommand(
             string action)
         {

@@ -20,7 +20,9 @@ namespace AudioAdventurer.Library.Common.Actions.Inform
         public CommandCategory Category => CommandCategory.Inform;
         public string Description => "Look at the room, item, person, or monster.";
 
-        public void Execute(IActionInput actionInput)
+        public void Execute(
+            IActionInput actionInput,
+            IActionHandler actionHandler)
         {
             var session = actionInput.Session;
             if (session == null)

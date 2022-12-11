@@ -22,7 +22,9 @@ namespace AudioAdventurer.Library.Common.Actions.Travel
         public CommandCategory Category => CommandCategory.Travel;
         public string Description => "Travel from one room to another";
 
-        public void Execute(IActionInput actionInput)
+        public void Execute(
+            IActionInput actionInput,
+            IActionHandler actionHandler)
         {
             var actor = actionInput.Actor;
             var whereToGo = actionInput.Tail.Trim();
@@ -45,7 +47,7 @@ namespace AudioAdventurer.Library.Common.Actions.Travel
                         {
                             if (exit.MoveThrough(actor))
                             {
-                                session.RequestImmediateExecute(new
+                                actionHandler.HandleAction(new
                                     ActionInput("look", session, actor));
 
                                 return;
