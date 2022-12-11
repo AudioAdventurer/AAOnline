@@ -5,6 +5,7 @@ using AudioAdventurer.Library.Common.Factories;
 using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Managers;
+using AudioAdventurer.Library.Common.Writers;
 using AudioAdventurer.Library.Testing.Services;
 using Autofac;
 
@@ -47,6 +48,9 @@ namespace AudioAdventurer.Apps.Console.Modules
 
             builder.RegisterType<Look>()
                 .As<IGameAction>();
+
+            builder.RegisterType<ServerOutputWriter>()
+                .As<IServerOutputWriter>();
         }
     }
 }

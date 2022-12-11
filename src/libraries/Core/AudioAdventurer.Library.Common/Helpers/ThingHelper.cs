@@ -86,25 +86,30 @@ namespace AudioAdventurer.Library.Common.Helpers
 
             if (room != null)
             {
-                // Get the exits
-                var exitBehaviors = room.FindBehaviors<ExitBehavior>();
+                var children = room.GetChildren();
 
-                // Go through each exit and see if the commands match the command to test against.
-                foreach (var exitBehavior in exitBehaviors)
+                foreach (var child in children)
                 {
-                    foreach (var exitBehaviorDestination in exitBehavior.Destinations)
+                    // Get the exits
+                    var exitBehaviors = child.FindBehaviors<ExitBehavior>();
+
+                    // Go through each exit and see if the commands match the command to test against.
+                    foreach (var exitBehavior in exitBehaviors)
                     {
-                        // Verify the target isn't this room
-                        if (!exitBehaviorDestination.TargetId.Equals(room.Id))
+                        foreach (var exitBehaviorDestination in exitBehavior.Destinations)
                         {
-                            // Test if the command passed in is this command
-                            if (exitBehaviorDestination.ExitCommand.Equals(command, StringComparison.InvariantCultureIgnoreCase))
+                            // Verify the target isn't this room
+                            if (!exitBehaviorDestination.TargetId.Equals(room.Id))
                             {
-                                // Exit as soon as we find a match
-                                return true;
+                                // Test if the command passed in is this command
+                                if (exitBehaviorDestination.ExitCommand.Equals(command, StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    // Exit as soon as we find a match
+                                    return true;
+                                }
                             }
                         }
-                    }   
+                    }
                 }
             }
 

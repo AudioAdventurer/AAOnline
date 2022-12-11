@@ -1,4 +1,5 @@
-﻿using AudioAdventurer.Library.Common.Models;
+﻿using System.Runtime.CompilerServices;
+using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Interfaces;
 
@@ -11,4 +12,10 @@ public interface IServerOutputWriter
     public ServerOutput WriteRoomDetails(
         IThing viewer,
         IThing room);
+
+    public ServerOutput WriteUnknownCommand(
+        string action);
+
+    public ServerOutput WriteUnknownDirection(
+        string direction);
 }

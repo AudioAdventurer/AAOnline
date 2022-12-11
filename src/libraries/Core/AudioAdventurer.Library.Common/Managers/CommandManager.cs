@@ -63,5 +63,10 @@ namespace AudioAdventurer.Library.Common.Managers
 
             _gameManager.ActionEnqueued -= ActionEnqueued;
         }
+
+        public void ExecuteAction(IActionInput action)
+        {
+            _actionHandler.HandleAction(action);
+        }
     }
 }

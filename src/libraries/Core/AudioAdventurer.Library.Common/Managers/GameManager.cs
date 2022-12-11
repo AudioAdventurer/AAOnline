@@ -14,7 +14,6 @@ namespace AudioAdventurer.Library.Common.Managers
     public class GameManager : IGameManager
     {
         private readonly object _lock;
-        private readonly IThingService _thingService;
         private readonly List<ISession> _sessions;
         private readonly Queue<IActionInput> _actions;
         private readonly ICommandManager _commandManager;
@@ -31,11 +30,9 @@ namespace AudioAdventurer.Library.Common.Managers
         public event EventHandler ActionDequeued;
 
         public GameManager(
-            IThingService thingService,
             ICommandManager commandManager)
         {
             _lock = new object();
-            _thingService = thingService;
             _commandManager = commandManager;
 
             _sessions = new List<ISession>();
@@ -111,12 +108,21 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (!_sessions.Contains(session))
                 {
                     session.UserInputReceived += UserInputReceived;
+                    session.RequestImmediateExecuteReceived += RequestImmediateExecuteReceived;
                     _sessions.Add(session);
 
                     OnSessionAddedHandler(session);
                 }
 
                 return true;
+            }
+        }
+
+        private void RequestImmediateExecuteReceived(object sender, EventArgs e)
+        {
+            if (e is RequestImmediateExecuteEventArgs args)
+            {
+                _commandManager.ExecuteAction(args.Action);
             }
         }
 
@@ -157,6 +163,7 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (_sessions.Contains(session))
                 {
                     session.UserInputReceived -= UserInputReceived;
+                    session.RequestImmediateExecuteReceived -= RequestImmediateExecuteReceived;
                     _sessions.Remove(session);
 
                     OnSessionRemovedHandler(session);

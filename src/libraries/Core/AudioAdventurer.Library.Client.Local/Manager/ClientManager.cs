@@ -44,6 +44,8 @@ namespace AudioAdventurer.Library.Client.Local.Manager
         // Blocking
         public void Run()
         {
+            _render.Render(null);
+
             do
             {
                 var command = Console.ReadLine();

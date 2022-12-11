@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Constants;
@@ -10,6 +11,39 @@ namespace AudioAdventurer.Library.Common.Writers
 {
     public class ServerOutputWriter : IServerOutputWriter
     {
+        public ServerOutput WriteUnknownCommand(
+            string action)
+        {
+            var serverOutput = new ServerOutput();
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.Action,
+                action,
+                false);
+
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.Text,
+                "is an unknown command.",
+                true);
+
+            return serverOutput;
+        }
+
+        public ServerOutput WriteUnknownDirection(string direction)
+        {
+            var serverOutput = new ServerOutput();
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.Text,
+                "Unable to move in specified direction of",
+                false);
+
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.Direction,
+                direction,
+                false);
+
+            return serverOutput;
+        }
+
         public ServerOutput WriteThingDetails(
             IThing viewer, 
             IThing viewedThing)

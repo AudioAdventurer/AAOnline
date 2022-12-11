@@ -122,6 +122,7 @@ namespace AudioAdventurer.Library.Common.Models
                     {
                         if (_children.Count < MaxChildren)
                         {
+                            // If child doesn't have this as a parent
                             if (!childThing.Parents.Contains(this.Id))
                             {
                                 // Add this a the parent of the child
@@ -132,6 +133,13 @@ namespace AudioAdventurer.Library.Common.Models
 
                                     return true;
                                 }
+                            }
+                            else
+                            {
+                                // It already does so just add to children
+                                _children.Add(childThing.Id);
+
+                                return true;
                             }
                         }
                     }
@@ -172,6 +180,12 @@ namespace AudioAdventurer.Library.Common.Models
                     if (_parents.Count < MaxParents)
                     {
                         _parents.Add(newParent.Id);
+
+                        if (!newParent.Children.Contains(this.Id))
+                        {
+                            newParent.AddChild(this);
+                        }
+
                         return true;
                     }
 
@@ -194,11 +208,13 @@ namespace AudioAdventurer.Library.Common.Models
                                 // Remove this from the parent
                                 if (oldParent.RemoveChild(this))
                                 {
+                                    if (!_parents.Contains(newParent.Id))
+                                    {
+                                        _parents.Add(newParent.Id);
+                                    }
+
                                     // Now add this to the new parent
                                     newParent.AddChild(this);
-
-                                    // Add the parent to this
-                                    _parents.Add(newParent.Id);
 
                                     return true;
                                 }
