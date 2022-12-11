@@ -54,6 +54,10 @@ namespace AudioAdventurer.Library.Client.Local.Manager
                 {
                     _session.ProcessUserInput(command);
                 }
+                else
+                {
+                    _render.RenderPrompt();
+                }
 
                 Thread.Sleep(250);
             } while (_running);
