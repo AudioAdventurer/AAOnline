@@ -3,17 +3,21 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Managers
 {
+    /// <summary>
+    /// The command manager is used by the game manager
+    /// to track and resolve game action
+    /// </summary>
     public class CommandManager : ICommandManager
     {
-        private readonly IThingService _thingService;
+        private readonly IActionHandler _actionHandler;
         private bool _running;
         private Thread _thread;
         private IGameManager _gameManager;
 
         public CommandManager(
-            IThingService thingService)
+            IActionHandler actionHandler)
         {
-            _thingService = thingService;
+            _actionHandler = actionHandler;
         }
 
         public bool Running => _running;
@@ -36,8 +40,10 @@ namespace AudioAdventurer.Library.Common.Managers
         {
             var action = _gameManager.DequeueAction();
 
-            //TODO Action processing
-            action?.Session?.WriteServerOutput($"You {action.FullText}");
+            if (action != null)
+            {
+                _actionHandler.HandleAction(action);
+            }
         }
 
         public void Stop()
@@ -56,6 +62,11 @@ namespace AudioAdventurer.Library.Common.Managers
             } while (_running);
 
             _gameManager.ActionEnqueued -= ActionEnqueued;
+        }
+
+        public void ExecuteAction(IActionInput action)
+        {
+            _actionHandler.HandleAction(action);
         }
     }
 }

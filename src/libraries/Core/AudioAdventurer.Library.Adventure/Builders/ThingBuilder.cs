@@ -182,25 +182,36 @@ namespace AudioAdventurer.Library.Adventure.Builders
                 MaxParents = 1
             };
 
-            var behaviorInfo = new BehaviorData
+            var playerBehaviorInfo = new BehaviorData
             {
                 BehaviorType = nameof(PlayerBehavior),
                 ParentId = playerInfo.Id
             };
-            playerBehavior = new PlayerBehavior(behaviorInfo, thingService);
+            playerBehavior = new PlayerBehavior(playerBehaviorInfo, thingService);
 
-            List<IBehavior> behaviors = new List<IBehavior> { playerBehavior };
+            var moveableBehaviorInfo = new BehaviorData
+            {
+                BehaviorType = nameof(MovableBehavior),
+                ParentId = playerInfo.Id
+            };
+            var moveable = new MovableBehavior(moveableBehaviorInfo, thingService);
 
-            var exit = new Thing(
+            List<IBehavior> behaviors = new List<IBehavior>
+            {
+                playerBehavior,
+                moveable
+            };
+
+            var player = new Thing(
                 playerInfo,
                 behaviors,
                 new List<Guid>(),
                 new List<Guid>(),
                 thingService);
 
-            thingService.SaveThing(exit);
+            thingService.SaveThing(player);
 
-            return exit;
+            return player;
         }
     }
 }

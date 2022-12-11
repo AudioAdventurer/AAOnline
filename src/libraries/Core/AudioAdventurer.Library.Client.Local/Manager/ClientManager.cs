@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using AudioAdventurer.Library.Client.Local.Renderers;
 using AudioAdventurer.Library.Common.EventArguments;
 using AudioAdventurer.Library.Common.Interfaces;
 
@@ -11,13 +12,14 @@ namespace AudioAdventurer.Library.Client.Local.Manager
         private readonly ISession _session;
         private Thread _thread;
         private bool _running;
+        private IServerOutputRenderer _render;
 
         public ClientManager(
             ISession session)
         {
+            _render = new ConsoleServerOutputRenderer();
             _session = session;
             _session.ServerOutputReceived += ServerOutputReceived;
-
         }
 
         public void Start()
@@ -42,6 +44,8 @@ namespace AudioAdventurer.Library.Client.Local.Manager
         // Blocking
         public void Run()
         {
+            _render.Render(null);
+
             do
             {
                 var command = Console.ReadLine();
@@ -59,7 +63,7 @@ namespace AudioAdventurer.Library.Client.Local.Manager
         {
             if (e is ServerOutputReceivedEventArgs args)
             {
-                Console.WriteLine(args.ServerOutput);
+                _render.Render(args.ServerOutput);
             }
         }
     }

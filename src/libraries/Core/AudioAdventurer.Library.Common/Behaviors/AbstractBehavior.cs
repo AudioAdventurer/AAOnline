@@ -11,31 +11,19 @@ namespace AudioAdventurer.Library.Common.Behaviors
         protected AbstractBehavior(
             IBehaviorData behaviorInfo)
         {
-            Id = behaviorInfo.Id;
             _behaviorData = behaviorInfo;
             _lock = new object();
         }
 
-        public Guid Id { get; set; }
+        public Guid Id => _behaviorData.Id;
 
-        public IThing Parent { get; private set; }
+        public Guid ParentId => _behaviorData.ParentId;
 
-        public void SetParent(IThing newParent)
+        public void SetParent(IThing parent)
         {
-            if (Parent != newParent)
-            {
-                if (Parent != null)
-                {
-                    OnRemoveBehavior();
-                }
-
-                Parent = newParent;
-                if (newParent != null)
-                {
-                    OnAddBehavior();
-                }
-            }
+            _behaviorData.ParentId = parent.Id;
         }
+
 
         protected virtual void OnAddBehavior()
         {

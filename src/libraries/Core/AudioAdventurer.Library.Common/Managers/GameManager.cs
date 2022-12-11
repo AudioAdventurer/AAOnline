@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Threading;
 using AudioAdventurer.Library.Common.EventArguments;
+using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
 
 namespace AudioAdventurer.Library.Common.Managers
 {
+    /// <summary>
+    /// The Game Manager controls the overall adventure
+    /// </summary>
     public class GameManager : IGameManager
     {
         private readonly object _lock;
-        private readonly IThingService _thingService;
         private readonly List<ISession> _sessions;
         private readonly Queue<IActionInput> _actions;
         private readonly ICommandManager _commandManager;
@@ -27,11 +30,9 @@ namespace AudioAdventurer.Library.Common.Managers
         public event EventHandler ActionDequeued;
 
         public GameManager(
-            IThingService thingService,
             ICommandManager commandManager)
         {
             _lock = new object();
-            _thingService = thingService;
             _commandManager = commandManager;
 
             _sessions = new List<ISession>();
@@ -107,6 +108,7 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (!_sessions.Contains(session))
                 {
                     session.UserInputReceived += UserInputReceived;
+                    session.RequestImmediateExecuteReceived += RequestImmediateExecuteReceived;
                     _sessions.Add(session);
 
                     OnSessionAddedHandler(session);
@@ -116,13 +118,39 @@ namespace AudioAdventurer.Library.Common.Managers
             }
         }
 
+        private void RequestImmediateExecuteReceived(object sender, EventArgs e)
+        {
+            if (e is RequestImmediateExecuteEventArgs args)
+            {
+                _commandManager.ExecuteAction(args.Action);
+            }
+        }
+
         private void UserInputReceived(object sender, EventArgs e)
         {
             if (e is UserInputReceivedEventArgs args)
             {
+                var command = args.Command;
+                var session = args.Session;
+                var actor = args.Actor;
+
+                // rather than forcing "move east"
+                // allow user to just say "east" and 
+                // then add "move" to the command here.
+                // This should only be use for simple movement.
+                // If further contextual commands arise, then a more generic
+                // behavior function like IsContextualCommand(command, out string commandType) 
+                // may be needed.
+                if (args.Actor.IsContextualDirectionCommand(command))
+                {
+                    //Ok so this is a contextual move command
+                    command = $"move {command.Trim()}";
+                }
+
                 var action = new ActionInput(
-                    args.Command,
-                    args.Session);
+                    command,
+                    session,
+                    actor);
 
                 EnqueueAction(action);
             }
@@ -135,6 +163,7 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (_sessions.Contains(session))
                 {
                     session.UserInputReceived -= UserInputReceived;
+                    session.RequestImmediateExecuteReceived -= RequestImmediateExecuteReceived;
                     _sessions.Remove(session);
 
                     OnSessionRemovedHandler(session);

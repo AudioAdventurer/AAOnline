@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
-using AudioAdventurer.Library.Common.Managers;
+using EventHandler = AudioAdventurer.Library.Common.Handlers.EventHandler;
 
 namespace AudioAdventurer.Library.Common.Models
 {
@@ -26,8 +27,8 @@ namespace AudioAdventurer.Library.Common.Models
             _parents = parents.ToList();
 
             _thingService = thingService;
-            EventManager = new ThingEventManager(this);
-            BehaviorManager = new BehaviorManager(
+            EventHandler = new EventHandler(this);
+            BehaviorHandler = new BehaviorHandler(
                 this,
                 behaviors);
             _lock = new object();
@@ -55,9 +56,13 @@ namespace AudioAdventurer.Library.Common.Models
             }
         }
 
-        public ThingEventManager EventManager { get; }
+        public EventHandler EventHandler { get; }
 
-        public BehaviorManager BehaviorManager { get; }
+        public BehaviorHandler BehaviorHandler { get; }
+
+        public IThingService ThingService => _thingService;
+
+        public object Lock => _lock;
 
         public Guid Id
         {
@@ -117,6 +122,7 @@ namespace AudioAdventurer.Library.Common.Models
                     {
                         if (_children.Count < MaxChildren)
                         {
+                            // If child doesn't have this as a parent
                             if (!childThing.Parents.Contains(this.Id))
                             {
                                 // Add this a the parent of the child
@@ -127,6 +133,13 @@ namespace AudioAdventurer.Library.Common.Models
 
                                     return true;
                                 }
+                            }
+                            else
+                            {
+                                // It already does so just add to children
+                                _children.Add(childThing.Id);
+
+                                return true;
                             }
                         }
                     }
@@ -167,6 +180,12 @@ namespace AudioAdventurer.Library.Common.Models
                     if (_parents.Count < MaxParents)
                     {
                         _parents.Add(newParent.Id);
+
+                        if (!newParent.Children.Contains(this.Id))
+                        {
+                            newParent.AddChild(this);
+                        }
+
                         return true;
                     }
 
@@ -189,11 +208,13 @@ namespace AudioAdventurer.Library.Common.Models
                                 // Remove this from the parent
                                 if (oldParent.RemoveChild(this))
                                 {
+                                    if (!_parents.Contains(newParent.Id))
+                                    {
+                                        _parents.Add(newParent.Id);
+                                    }
+
                                     // Now add this to the new parent
                                     newParent.AddChild(this);
-
-                                    // Add the parent to this
-                                    _parents.Add(newParent.Id);
 
                                     return true;
                                 }

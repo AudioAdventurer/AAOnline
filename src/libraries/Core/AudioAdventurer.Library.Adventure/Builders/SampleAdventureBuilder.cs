@@ -28,8 +28,8 @@ namespace AudioAdventurer.Library.Adventure.Builders
             var cavern1Entrance = _thingService.BuildExit("Cavern Entrance", out ExitBehavior exit1Behavior);
             cavern1Entrance.AddParent(tunnel);
             cavern1Entrance.AddParent(cavern1);
-            exitBehavior.AddDestination("E", tunnel.Id);
-            exitBehavior.AddDestination("W", cavern1.Id);
+            exit1Behavior.AddDestination("E", tunnel.Id);
+            exit1Behavior.AddDestination("W", cavern1.Id);
 
             return entrance;
         }

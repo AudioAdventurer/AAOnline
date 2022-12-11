@@ -4,7 +4,7 @@ public interface IActionInput
 {
     public string FullText { get; }
 
-    public string Noun { get; }
+    public string Action { get; }
 
     public string Tail { get; }
 

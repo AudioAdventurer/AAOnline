@@ -3,10 +3,9 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.EventArguments
 {
-    public class ServerOutputReceivedEventArgs
+    public class RequestImmediateExecuteEventArgs
         : EventArgs
     {
-        public IServerOutput ServerOutput { get; set; }
-        public ISession Session { get; set; }
+        public IActionInput Action { get; set; }
     }
 }

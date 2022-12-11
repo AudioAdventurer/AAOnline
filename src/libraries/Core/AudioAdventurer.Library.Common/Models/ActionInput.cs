@@ -10,10 +10,11 @@ namespace AudioAdventurer.Library.Common.Models
     {
         public ActionInput(
             string fullText,
-            ISession session)
+            ISession session,
+            IThing actor)
         {
             Session = session;
-            Actor = session.Player;
+            Actor = actor;
             FullText = fullText;
 
             ParseText(fullText);
@@ -21,7 +22,7 @@ namespace AudioAdventurer.Library.Common.Models
 
         public string FullText { get; }
 
-        public string Noun { get; private set; }
+        public string Action { get; private set; }
 
         public string Tail { get; private set; }
 
@@ -42,8 +43,12 @@ namespace AudioAdventurer.Library.Common.Models
 
             if (words.Length > 0)
             {
-                Noun = words[0].ToLower();
-                Tail = fullText.Remove(0, Noun.Length).Trim();
+                Action = words[0].ToLower();
+
+                Tail = fullText
+                    .Remove(0, Action.Length)
+                    .Trim();
+
                 Params = words.Skip(1).ToArray();
             }
         }

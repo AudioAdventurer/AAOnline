@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace AudioAdventurer.Library.Common.Interfaces
 {
     public interface IBehavior
     {
-        public IThing Parent { get; }
+        public Guid ParentId { get; }
+
+        public IBehaviorData GetProperties();
 
         public void SetParent(IThing parent);
-        
-        public IBehaviorData GetProperties();
     }
 }

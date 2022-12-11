@@ -52,6 +52,17 @@ namespace AudioAdventurer.Library.Common.Behaviors
             }
         }
 
+        public IReadOnlyList<ExitDestination> Destinations
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _destinations.AsReadOnly();
+                }
+            }
+        }
+
         public void AddDestination(
             string movementCommand,
             Guid destinationId)
@@ -90,7 +101,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
         }
 
         public bool MoveThrough(
-            Thing thingToMove)
+            IThing thingToMove)
         {
             // If the thing isn't currently mobile, bail.
             var movableBehavior = thingToMove.FindBehavior<MovableBehavior>();
@@ -146,7 +157,26 @@ namespace AudioAdventurer.Library.Common.Behaviors
             var leaveMessage = new SensoryMessage(SensoryType.Sight, 100, leaveContextMessage);
             var arriveMessage = new SensoryMessage(SensoryType.Sight, 100, arriveContextMessage);
 
-            return movableBehavior.Move(destination, Parent, leaveMessage, arriveMessage);
+            return movableBehavior.Move(destination, parent, leaveMessage, arriveMessage);
+        }
+
+        public ExitDestination GetDestinationFrom(Guid originId)
+        {
+            foreach (var destination in _destinations)
+            {
+                if (!destination.TargetId.Equals(originId))
+                {
+                    return destination;
+                }
+            }
+
+            return null;
+        }
+
+        public string GetExitCommandFrom(IThing fromLocation)
+        {
+            var destination = GetDestinationFrom(fromLocation.Id);
+            return destination?.ExitCommand;
         }
     }
 }

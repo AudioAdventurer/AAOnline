@@ -1,13 +1,13 @@
 ﻿using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Interfaces;
 
-namespace AudioAdventurer.Library.Common.Resolvers
+namespace AudioAdventurer.Library.Common.Factories
 {
-    public class CoreBehaviorResolver : IBehaviorResolver
+    public class CoreBehaviorFactory : IBehaviorResolver
     {
         private readonly IThingService _thingService;
 
-        public CoreBehaviorResolver(
+        public CoreBehaviorFactory(
             IThingService thingService)
         {
             _thingService = thingService;

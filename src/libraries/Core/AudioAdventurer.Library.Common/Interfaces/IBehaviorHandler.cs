@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AudioAdventurer.Library.Common.Actions
+namespace AudioAdventurer.Library.Common.Interfaces
 {
-    public abstract class AbstractGameAction
+    public interface IBehaviorHandler
     {
-        public abstract void Execute();
     }
 }

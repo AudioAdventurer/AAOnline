@@ -29,7 +29,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
             SensoryMessage leavingMessage,
             SensoryMessage arrivingMessage)
         {
-            IThing actor = Parent;
+            IThing actor = _thingService.GetThing(ParentId);
             var goingFromId = actor.Parents.FirstOrDefault();
             var goingFrom = _thingService.GetThing(goingFromId);
 
@@ -49,19 +49,25 @@ namespace AudioAdventurer.Library.Common.Behaviors
             };
 
             // Broadcast the Leave Request first to see if the player is allowed to leave.
-            actor.EventManager.OnMovementRequest(leaveEvent, EventScope.ParentsDown);
+            actor.EventHandler.OnMovementRequest(leaveEvent, EventScope.ParentsDown);
             if (!leaveEvent.IsCanceled)
             {
                 // Next see if the player is allowed to Arrive at the new location.
-                destination.EventManager.OnMovementRequest(arriveEvent, EventScope.SelfDown);
+                destination.EventHandler.OnMovementRequest(
+                    arriveEvent, 
+                    EventScope.SelfDown);
+
                 if (!arriveEvent.IsCanceled)
                 {
-                    actor.EventManager.OnMovementEvent(leaveEvent, EventScope.ParentsDown);
-//                    actor.RemoveFromParents();
+                    actor.EventHandler.OnMovementEvent(
+                        leaveEvent, 
+                        EventScope.ParentsDown);
+
+                    goingFrom.RemoveChild(actor);
                     destination.AddChild(actor);
 
                     // TODO: Ensure these automatically enqueue a save.
-                    destination.EventManager.OnMovementEvent(arriveEvent, EventScope.SelfDown);
+                    destination.EventHandler.OnMovementEvent(arriveEvent, EventScope.SelfDown);
                     return true;
                 }
             }
