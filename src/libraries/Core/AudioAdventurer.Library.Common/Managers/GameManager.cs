@@ -108,21 +108,12 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (!_sessions.Contains(session))
                 {
                     session.UserInputReceived += UserInputReceived;
-                    session.RequestImmediateExecuteReceived += RequestImmediateExecuteReceived;
                     _sessions.Add(session);
 
                     OnSessionAddedHandler(session);
                 }
 
                 return true;
-            }
-        }
-
-        private void RequestImmediateExecuteReceived(object sender, EventArgs e)
-        {
-            if (e is RequestImmediateExecuteEventArgs args)
-            {
-                _commandManager.ExecuteAction(args.Action);
             }
         }
 
@@ -163,7 +154,6 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (_sessions.Contains(session))
                 {
                     session.UserInputReceived -= UserInputReceived;
-                    session.RequestImmediateExecuteReceived -= RequestImmediateExecuteReceived;
                     _sessions.Remove(session);
 
                     OnSessionRemovedHandler(session);

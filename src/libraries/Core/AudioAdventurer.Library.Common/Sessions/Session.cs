@@ -15,8 +15,7 @@ namespace AudioAdventurer.Library.Common.Sessions
 
         public event EventHandler UserInputReceived;
         public event EventHandler ServerOutputReceived;
-        public event EventHandler RequestImmediateExecuteReceived;
-
+        
         public void WriteServerOutput(
             IServerOutput output)
         {
@@ -39,23 +38,6 @@ namespace AudioAdventurer.Library.Common.Sessions
             };
 
             OnUserInputReceived(args);
-        }
-
-        public void RequestImmediateExecute(IActionInput action)
-        {
-            RequestImmediateExecuteEventArgs args = new
-                RequestImmediateExecuteEventArgs
-                {
-                    Action = action
-                };
-
-            OnRequestImmediateExecuteReceived(args);
-        }
-
-        protected virtual void OnRequestImmediateExecuteReceived(
-            RequestImmediateExecuteEventArgs e)
-        {
-            RequestImmediateExecuteReceived?.Invoke(this, e);
         }
 
         protected virtual void OnUserInputReceived(
