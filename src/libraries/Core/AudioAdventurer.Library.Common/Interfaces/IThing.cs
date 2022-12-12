@@ -24,5 +24,6 @@ namespace AudioAdventurer.Library.Common.Interfaces
         public bool RemoveParent(IThing parentToRemove);
 
         public IThingData GetThingData();
+        public void AddBehavior<T>(T behavior) where T : IBehavior;
     }
 }

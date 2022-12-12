@@ -9,8 +9,9 @@ public interface IGameAction
     public string CommandAlias { get; }
 
     public CommandCategory Category { get; }
-
     public string Description { get; }
     
-    public void Execute(IActionInput actionInput);
+    public void Execute(
+        IActionInput actionInput, 
+        IActionHandler actionHandler);
 }

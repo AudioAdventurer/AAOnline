@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AudioAdventurer.Library.Adventure\AudioAdventurer.Library.Adventure.csproj" />
     <ProjectReference Include="..\..\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
+    <ProjectReference Include="..\..\AudioAdventurer.Library.SimpleMessageBus\AudioAdventurer.Library.SimpleMessageBus.csproj" />
     <ProjectReference Include="..\..\AudioAdventurer.Library.Testing\AudioAdventurer.Library.Testing.csproj" />
   </ItemGroup>
 

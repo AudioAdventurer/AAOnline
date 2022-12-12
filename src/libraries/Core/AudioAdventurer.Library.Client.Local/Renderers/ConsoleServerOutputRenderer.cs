@@ -34,17 +34,11 @@ namespace AudioAdventurer.Library.Client.Local.Renderers
                     }
                 }
 
-                var text = sb.ToString().TrimEnd();
+                var text = sb
+                    .ToString()
+                    .TrimEnd();
 
-                if (text.EndsWith("."))
-                {
-                    Console.WriteLine(text);
-                }
-                else
-                {
-                    Console.Write(text);
-                    Console.WriteLine(".");
-                }
+                Console.WriteLine(text);
             }
 
             RenderPrompt();

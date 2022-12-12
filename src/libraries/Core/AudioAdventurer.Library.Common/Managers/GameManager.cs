@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading;
+using System.Threading.Tasks;
 using AudioAdventurer.Library.Common.EventArguments;
+using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
@@ -17,6 +20,7 @@ namespace AudioAdventurer.Library.Common.Managers
         private readonly List<ISession> _sessions;
         private readonly Queue<IActionInput> _actions;
         private readonly ICommandManager _commandManager;
+        private readonly IMessageBus _messageBus;
 
         private bool _running;
         private bool _stopping;
@@ -30,13 +34,39 @@ namespace AudioAdventurer.Library.Common.Managers
         public event EventHandler ActionDequeued;
 
         public GameManager(
-            ICommandManager commandManager)
+            ICommandManager commandManager,
+            IMessageBus messageBus)
         {
             _lock = new object();
             _commandManager = commandManager;
 
             _sessions = new List<ISession>();
             _actions = new Queue<IActionInput>();
+
+            messageBus.MessageReceived += MessageBus_MessageReceived;
+            _messageBus = messageBus;
+
+        }
+
+        private void MessageBus_MessageReceived(object sender, EventArgs e)
+        {
+            if (e is MessageReceivedEventArgs args)
+            {
+                var ge = args.Message.Event;
+
+                if (ge is SubmitCommandEvent sce)
+                {
+                    var actionInput = new ActionInput(
+                        sce.CommandText,
+                        null, 
+                        sce.Actor);
+
+                    Task.Run(() =>
+                    {
+                        EnqueueAction(actionInput);
+                    });
+                }
+            }
         }
 
         public void Start()
@@ -108,21 +138,15 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (!_sessions.Contains(session))
                 {
                     session.UserInputReceived += UserInputReceived;
-                    session.RequestImmediateExecuteReceived += RequestImmediateExecuteReceived;
                     _sessions.Add(session);
 
-                    OnSessionAddedHandler(session);
+                    Task.Run(() =>
+                    {
+                        OnSessionAddedHandler(session);
+                    });
                 }
 
                 return true;
-            }
-        }
-
-        private void RequestImmediateExecuteReceived(object sender, EventArgs e)
-        {
-            if (e is RequestImmediateExecuteEventArgs args)
-            {
-                _commandManager.ExecuteAction(args.Action);
             }
         }
 
@@ -152,7 +176,10 @@ namespace AudioAdventurer.Library.Common.Managers
                     session,
                     actor);
 
-                EnqueueAction(action);
+                Task.Run(() =>
+                {
+                    EnqueueAction(action);
+                });
             }
         }
 
@@ -163,10 +190,12 @@ namespace AudioAdventurer.Library.Common.Managers
                 if (_sessions.Contains(session))
                 {
                     session.UserInputReceived -= UserInputReceived;
-                    session.RequestImmediateExecuteReceived -= RequestImmediateExecuteReceived;
                     _sessions.Remove(session);
 
-                    OnSessionRemovedHandler(session);
+                    Task.Run(() =>
+                    {
+                        OnSessionRemovedHandler(session);
+                    });
                 }
             }
         }
@@ -181,7 +210,11 @@ namespace AudioAdventurer.Library.Common.Managers
                 }
 
                 _actions.Enqueue(action);
-                OnActionEnqueuedHandler(action);
+
+                Task.Run(() =>
+                {
+                    OnActionEnqueuedHandler(action);
+                });
 
                 return true;
             }
@@ -193,7 +226,11 @@ namespace AudioAdventurer.Library.Common.Managers
             {
                 if (_actions.TryDequeue(out IActionInput action))
                 {
-                    OnActionDequeuedHandler(action);
+                    Task.Run(() =>
+                    {
+                        OnActionDequeuedHandler(action);
+                    });
+                    
                     return action;
                 }
 

@@ -1,104 +1,39 @@
-﻿using AudioAdventurer.Library.Common.Constants;
-using AudioAdventurer.Library.Common.Delegates;
-using AudioAdventurer.Library.Common.Events;
+﻿using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Models;
-using System.Collections.Generic;
-using System;
+using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Handlers
 {
     /// <summary>
     /// Used by Thing objects to dispatch events
     /// </summary>
-    public class EventHandler
+    public class EventHandler : IEventHandler
     {
-        private readonly Thing _owner;
+        private IThing _parent;
+        private readonly IMessageBus _messageBus;
 
-        public EventHandler(Thing owner)
+        public EventHandler(
+            IThing parent,
+            IMessageBus messageBus)
         {
-            _owner = owner;
+            _parent = parent;
+            _messageBus = messageBus;
         }
 
-        public event GameEventHandler CombatEvent;
-
-        public event CancellableGameEventHandler CombatRequest;
-
-        public event GameEventHandler MovementEvent;
-
-        public event CancellableGameEventHandler MovementRequest;
-
-        public event GameEventHandler CommunicationEvent;
-
-        public event CancellableGameEventHandler CommunicationRequest;
-
-        public event GameEventHandler MiscellaneousEvent;
-
-        public event CancellableGameEventHandler MiscellaneousRequest;
-
-        public void OnMovementEvent(
-            AbstractGameEvent e,
-            EventScope eventScope)
+        public void SendMessage(IGameEvent gameEvent)
         {
-
+            _messageBus.SendMessage(gameEvent);
         }
 
-        public void OnMovementRequest(
-            CancellableGameEvent e,
-            EventScope eventScope)
+        public void SendCommandMessage(string command, IThing actor)
         {
-        }
-
-        private void OnEvent(
-            Func<EventHandler, GameEventHandler> handlerSelector,
-            AbstractGameEvent e,
-            EventScope eventScope)
-        {
-
-        }
-
-        private void OnRequest(
-            Func<EventHandler, CancellableGameEventHandler> handlerSelector,
-            CancellableGameEvent e,
-            EventScope eventScope)
-        {
-
-        }
-
-        private void OnRequest(
-            Func<EventHandler, CancellableGameEventHandler> handlerSelector,
-            CancellableGameEvent e,
-            bool cascadeEventToChildren)
-        {
-            // Build a request target queue which starts with our owner Thing and visits all it's Children.
-            // (This is a queue instead of recursion to help avoid stack overflows and such with very large object trees.)
-            Queue<Thing> requestTargetQueue = new Queue<Thing>();
-            requestTargetQueue.Enqueue(_owner);
-
-            while (requestTargetQueue.Count > 0)
+            var sce = new SubmitCommandEvent
             {
-                // If anything (like one of the thing's Behaviors) is subscribed to this request, send it there.
-                Thing currentRequestTarget = requestTargetQueue.Dequeue();
-                var handler = handlerSelector(currentRequestTarget.EventHandler);
-                if (handler != null)
-                {
-                    handler(currentRequestTarget, e);
+                Actor = actor,
+                CommandText = command
+            };
 
-                    // If the event has been canceled by the handler, we no longer need to look for further permission.
-                    if (e.IsCanceled)
-                    {
-                        break;
-                    }
-                }
-
-                if (cascadeEventToChildren)
-                {
-                    // Enqueue all the current target's children for processing.
-                    // foreach (Thing child in currentRequestTarget.Children)
-                    // {
-                    //     requestTargetQueue.Enqueue(child);
-                    // }
-                }
-            }
+            SendMessage(sce);
         }
     }
 }

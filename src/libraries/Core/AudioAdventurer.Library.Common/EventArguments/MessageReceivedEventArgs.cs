@@ -3,9 +3,8 @@ using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.EventArguments
 {
-    public class RequestImmediateExecuteEventArgs
-        : EventArgs
+    public class MessageReceivedEventArgs : EventArgs
     {
-        public IActionInput Action { get; set; }
+        public IMessageBusMessage Message { get; set; }
     }
 }

@@ -6,7 +6,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
     public class UserControlledBehavior
         : AbstractBehavior
     {
-        public UserControlledBehavior(IBehaviorData behaviorInfo)
+        public UserControlledBehavior(
+            IBehaviorData behaviorInfo)
             : base(behaviorInfo)
         {
         }

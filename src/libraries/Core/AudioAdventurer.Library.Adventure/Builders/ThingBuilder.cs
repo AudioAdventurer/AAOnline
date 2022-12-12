@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
-using AudioAdventurer.Library.Data.Objects;
-using AudioAdventurer.Library.Data.Repos;
 
 namespace AudioAdventurer.Library.Adventure.Builders
 {
@@ -15,19 +13,15 @@ namespace AudioAdventurer.Library.Adventure.Builders
             string name,
             string description)
         {
-            var worldInfo = new ThingData()
-            {
-                Name = name,
-                Description = description
-            };
+            var worldInfo = thingService.GetEmptyThingData();
+            worldInfo.Name = name;
+            worldInfo.Description = description;
 
-            var behaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(WorldBehavior),
-                ParentId = worldInfo.Id
-            };
+            var behaviorInfo = thingService.GetEmptyBehaviorData();
+            behaviorInfo.BehaviorType = nameof(WorldBehavior);
+            behaviorInfo.ParentId = worldInfo.Id;
+            var worldBehavior = thingService.FindBehavior(behaviorInfo);
 
-            var worldBehavior = new WorldBehavior(behaviorInfo);
             List<IBehavior> behaviors = new List<IBehavior> { worldBehavior };
 
             var world = new Thing(
@@ -47,19 +41,15 @@ namespace AudioAdventurer.Library.Adventure.Builders
             string name,
             string description)
         {
-            var areaInfo = new ThingData()
-            {
-                Name = name,
-                Description = description
-            };
+            var areaInfo = thingService.GetEmptyThingData();
+            areaInfo.Name = name;
+            areaInfo.Description = description;
 
-            var behaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(AreaBehavior),
-                ParentId = areaInfo.Id
-            };
+            var behaviorInfo = thingService.GetEmptyBehaviorData();
+            behaviorInfo.BehaviorType = nameof(AreaBehavior);
+            behaviorInfo.ParentId = areaInfo.Id;
+            var areaBehavior = thingService.FindBehavior(behaviorInfo);
 
-            var areaBehavior = new AreaBehavior(behaviorInfo);
             List<IBehavior> behaviors = new List<IBehavior> { areaBehavior };
 
             var area = new Thing(
@@ -74,24 +64,39 @@ namespace AudioAdventurer.Library.Adventure.Builders
             return area;
         }
 
+        public static IThing BuildObject(
+            this IThingService thingService,
+            string name,
+            string description = null)
+        {
+            var objectInfo = thingService.GetEmptyThingData();
+            objectInfo.Name = name;
+            objectInfo.Description = description;
+
+            var obj = new Thing(
+                objectInfo,
+                new List<Guid>(),
+                new List<Guid>(),
+                thingService);
+
+            thingService.SaveThing(obj);
+
+            return obj;
+        }
+
         public static IThing BuildRoom(
             this IThingService thingService,
             string name,
             string description = null)
         {
-            var roomInfo = new ThingData()
-            {
-                Name = name,
-                Description = description,
-            };
+            var roomInfo = thingService.GetEmptyThingData();
+            roomInfo.Name = name;
+            roomInfo.Description = description;
 
-            var behaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(RoomBehavior),
-                ParentId = roomInfo.Id
-            };
-
-            var roomBehavior = new RoomBehavior(behaviorInfo);
+            var behaviorInfo = thingService.GetEmptyBehaviorData();
+            behaviorInfo.BehaviorType = nameof(RoomBehavior);
+            behaviorInfo.ParentId = roomInfo.Id;
+            var roomBehavior = thingService.FindBehavior(behaviorInfo);
 
             List<IBehavior> behaviors = new List<IBehavior> { roomBehavior };
 
@@ -112,19 +117,14 @@ namespace AudioAdventurer.Library.Adventure.Builders
             string name,
             string description = null)
         {
-            var movableItemData = new ThingData()
-            {
-                Name = name,
-                Description = description
-            };
+            var movableItemData = thingService.GetEmptyThingData();
+            movableItemData.Name = name;
+            movableItemData.Description = description;
 
-            var behaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(MovableBehavior),
-                ParentId = movableItemData.Id
-            };
-
-            var movableBehavior = new MovableBehavior(behaviorInfo, thingService);
+            var behaviorInfo = thingService.GetEmptyBehaviorData();
+            behaviorInfo.BehaviorType = nameof(MovableBehavior);
+            behaviorInfo.ParentId = movableItemData.Id;
+            var movableBehavior = thingService.FindBehavior(behaviorInfo);
 
             List<IBehavior> behaviors = new List<IBehavior> { movableBehavior };
 
@@ -143,20 +143,16 @@ namespace AudioAdventurer.Library.Adventure.Builders
         public static IThing BuildExit(
             this IThingService thingService,
             string name,
-            out ExitBehavior exitBehavior)
+            out IBehavior exitBehavior)
         {
-            var exitInfo = new ThingData
-            {
-                Name = name,
-                MaxParents = 2
-            };
+            var exitInfo = thingService.GetEmptyThingData();
+            exitInfo.Name = name;
+            exitInfo.MaxParents = 2;
 
-            var behaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(ExitBehavior),
-                ParentId = exitInfo.Id
-            };
-            exitBehavior = new ExitBehavior(behaviorInfo, thingService);
+            var behaviorInfo = thingService.GetEmptyBehaviorData();
+            behaviorInfo.BehaviorType = nameof(ExitBehavior);
+            behaviorInfo.ParentId = exitInfo.Id;
+            exitBehavior = thingService.FindBehavior(behaviorInfo);
 
             List<IBehavior> behaviors = new List<IBehavior> { exitBehavior };
             var exit = new Thing(
@@ -174,32 +170,38 @@ namespace AudioAdventurer.Library.Adventure.Builders
         public static IThing BuildPlayer(
             this IThingService thingService,
             string name,
-            out PlayerBehavior playerBehavior)
+            out IBehavior playerBehavior)
         {
-            var playerInfo = new ThingData
-            {
-                Name = name,
-                MaxParents = 1
-            };
+            var playerInfo = thingService.GetEmptyThingData();
+            playerInfo.Name = name;
+            playerInfo.MaxParents = 1;
 
-            var playerBehaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(PlayerBehavior),
-                ParentId = playerInfo.Id
-            };
-            playerBehavior = new PlayerBehavior(playerBehaviorInfo, thingService);
+            var playerBehaviorInfo = thingService.GetEmptyBehaviorData();
+            playerBehaviorInfo.BehaviorType = nameof(PlayerBehavior);
+            playerBehaviorInfo.ParentId = playerInfo.Id;
+            playerBehavior = thingService.FindBehavior(playerBehaviorInfo);
 
-            var moveableBehaviorInfo = new BehaviorData
-            {
-                BehaviorType = nameof(MovableBehavior),
-                ParentId = playerInfo.Id
-            };
-            var moveable = new MovableBehavior(moveableBehaviorInfo, thingService);
+            var moveableBehaviorInfo = thingService.GetEmptyBehaviorData();
+            moveableBehaviorInfo.BehaviorType = nameof(MovableBehavior);
+            moveableBehaviorInfo.ParentId = playerInfo.Id;
+            var moveable = thingService.FindBehavior(moveableBehaviorInfo);
+
+            var userSensoryBehaviorInfo = thingService.GetEmptyBehaviorData();
+            userSensoryBehaviorInfo.BehaviorType = nameof(UserSensoryBehavior);
+            userSensoryBehaviorInfo.ParentId = playerInfo.Id;
+            var userSensoryBehavior = thingService.FindBehavior(userSensoryBehaviorInfo);
+
+            var observantBehaviorInfo = thingService.GetEmptyBehaviorData();
+            observantBehaviorInfo.BehaviorType = nameof(ObservantBehavior);
+            observantBehaviorInfo.ParentId = playerInfo.Id;
+            var observantBehavior = thingService.FindBehavior(observantBehaviorInfo);
 
             List<IBehavior> behaviors = new List<IBehavior>
             {
                 playerBehavior,
-                moveable
+                moveable,
+                observantBehavior,
+                userSensoryBehavior
             };
 
             var player = new Thing(

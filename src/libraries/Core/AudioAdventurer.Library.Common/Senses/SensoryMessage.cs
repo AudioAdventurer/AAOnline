@@ -6,7 +6,6 @@ namespace AudioAdventurer.Library.Common.Senses
 {
     public class SensoryMessage
     {
-
         public SensoryMessage(
             SensoryType targetedSense,
             int messageStrength,

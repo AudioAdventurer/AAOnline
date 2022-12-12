@@ -6,6 +6,7 @@ using AudioAdventurer.Library.Common.Handlers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Managers;
 using AudioAdventurer.Library.Common.Writers;
+using AudioAdventurer.Library.SimpleMessageBus.Managers;
 using AudioAdventurer.Library.Testing.Services;
 using Autofac;
 
@@ -29,7 +30,7 @@ namespace AudioAdventurer.Apps.Console.Modules
                 .SingleInstance();
 
             builder.RegisterType<CoreBehaviorFactory>()
-                .As<IBehaviorResolver>();
+                .As<IBehaviorFactory>();
 
             builder.RegisterType<GameManager>()
                 .As<IGameManager>();
@@ -43,14 +44,12 @@ namespace AudioAdventurer.Apps.Console.Modules
             builder.RegisterType<ActionHandler>()
                 .As<IActionHandler>();
 
-            builder.RegisterType<Move>()
-                .As<IGameAction>();
-
-            builder.RegisterType<Look>()
-                .As<IGameAction>();
-
             builder.RegisterType<ServerOutputWriter>()
                 .As<IServerOutputWriter>();
+
+            builder.RegisterType<SimpleMessageBusManager>()
+                .As<IMessageBus>()
+                .SingleInstance();
         }
     }
 }

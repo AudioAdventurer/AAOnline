@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AudioAdventurer.Library.Common.Interfaces;
 
@@ -16,14 +17,15 @@ namespace AudioAdventurer.Library.Common.Handlers
             IEnumerable<IBehavior> behaviors = null)
         {
             Parent = parent;
+            _managedBehaviors = new List<IBehavior>();
 
             if (behaviors != null)
             {
-                _managedBehaviors = behaviors.ToList();
-            }
-            else
-            {
-                _managedBehaviors = new List<IBehavior>();
+                foreach (var behavior in behaviors)
+                {
+                    _managedBehaviors.Add(behavior);
+                    behavior.SetParent(parent);
+                }
             }
         }
 
@@ -97,6 +99,22 @@ namespace AudioAdventurer.Library.Common.Handlers
                 return _managedBehaviors
                     .OfType<T>();
             }
+        }
+
+        public void SetSession(ISession session)
+        {
+            foreach (var behavior in _managedBehaviors)
+            {
+                if (behavior is IRequiresSession rs)
+                {
+                    rs.Session = session;
+                }
+            }
+        }
+
+        public void RemoveSession()
+        {
+            
         }
     }
 }

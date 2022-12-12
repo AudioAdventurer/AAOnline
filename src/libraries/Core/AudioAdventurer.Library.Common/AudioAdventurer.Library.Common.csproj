@@ -7,15 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resolvers\**" />
+    <EmbeddedResource Remove="Resolvers\**" />
+    <None Remove="Resolvers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Actions\Activities\" />
     <Folder Include="Actions\Admin\" />
     <Folder Include="Actions\Commercial\" />
-    <Folder Include="Actions\Communicate\" />
     <Folder Include="Actions\Configure\" />
     <Folder Include="Actions\Item\" />
     <Folder Include="Actions\Player\" />
-    <Folder Include="Modules\" />
-    <Folder Include="Resolvers\" />
   </ItemGroup>
 
   <ItemGroup>

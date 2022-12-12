@@ -2,6 +2,8 @@
 {
     public interface IServerOutputRenderer
     {
+        public void RenderPrompt();
+
         public void Render(IServerOutput output);
     }
 }
