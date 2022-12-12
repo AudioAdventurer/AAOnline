@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Interfaces;
 
@@ -26,13 +24,16 @@ namespace AudioAdventurer.Library.Common.Actions.Inform
         {
             var session = actionInput.Session;
 
-            var actions = actionHandler.Actions.ToList();
-            var sorted = actions
-                .OrderBy(a => a.Command)
-                .ToList();
+            if (session != null)
+            {
+                var actions = actionHandler.Actions.ToList();
+                var sorted = actions
+                    .OrderBy(a => a.Command)
+                    .ToList();
 
-            var output = _writer.WriteHelpCommands(sorted);
-            session.WriteServerOutput(output);
+                var output = _writer.WriteHelpCommands(sorted);
+                session.WriteServerOutput(output);
+            }
         }
     }
 }

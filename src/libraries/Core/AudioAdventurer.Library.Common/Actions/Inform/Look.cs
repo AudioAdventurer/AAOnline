@@ -25,21 +25,19 @@ namespace AudioAdventurer.Library.Common.Actions.Inform
             IActionHandler actionHandler)
         {
             var session = actionInput.Session;
-            if (session == null)
+            if (session != null)
             {
-                return;
-            }
+                if (TryLookAtThing(
+                        actionInput,
+                        out var serverOutput))
+                {
+                    session.WriteServerOutput(serverOutput);
+                    return;
+                }
 
-            if (TryLookAtThing(
-                    actionInput, 
-                    out var serverOutput))
-            {
+                serverOutput = LookAtRoom(actionInput);
                 session.WriteServerOutput(serverOutput);
-                return;
             }
-
-            serverOutput = LookAtRoom(actionInput);
-            session.WriteServerOutput(serverOutput);
         }
 
         private bool TryLookAtThing(

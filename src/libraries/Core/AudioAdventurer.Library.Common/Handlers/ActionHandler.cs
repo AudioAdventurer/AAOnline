@@ -51,8 +51,11 @@ namespace AudioAdventurer.Library.Common.Handlers
             }
             else
             {
-                var output = _writer.WriteUnknownCommand(actionInput.Action);
-                actionInput.Session.WriteServerOutput(output);
+                if (actionInput.Session != null)
+                {
+                    var output = _writer.WriteUnknownCommand(actionInput.Action);
+                    actionInput.Session.WriteServerOutput(output);
+                }
             }
         }
     }

@@ -1,10 +1,8 @@
 ﻿using System;
 using AudioAdventurer.Library.Common.Behaviors;
-using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
-using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Common.Senses;
 
 namespace AudioAdventurer.GameExtensions.SampleAdventure.Behaviors
@@ -13,16 +11,12 @@ namespace AudioAdventurer.GameExtensions.SampleAdventure.Behaviors
         : AbstractBehavior,
         IResponsiveBehavior
     {
-        private readonly IThingService _thingService;
-        private int _questionCount = 0;
+        private int _questionCount;
 
         public ParrotBehavior(
-            IBehaviorData behaviorInfo,
-            IThingService thingService) 
+            IBehaviorData behaviorInfo) 
             : base(behaviorInfo)
         {
-            _thingService = thingService;
-
             ParseBehavior();
         }
 
@@ -84,24 +78,8 @@ namespace AudioAdventurer.GameExtensions.SampleAdventure.Behaviors
             if (output != null)
             {
                 var parent = Parent;
-                var parentRoom = parent.FindParentRoom();
 
-                ContextualString cs = new ContextualString(
-                    parent,
-                    parentRoom,
-                    output);
-
-                SensoryMessage sm = new SensoryMessage(
-                    SensoryType.Hearing,
-                    100,
-                    cs);
-
-                VerbalCommunicationEvent vce = new VerbalCommunicationEvent(
-                    parent,
-                    sm,
-                    VerbalCommunicationType.Say);
-
-                parent.EventHandler.SendMessage(vce);
+                parent.EventHandler.SendCommandMessage($"say {output}", parent);
             }
         }
 

@@ -56,9 +56,8 @@ namespace AudioAdventurer.GameExtensions.SampleAdventure.Builders
             parrot.AddParent(cavernRoom);
 
             var parrotBehaviorData = thingService.GetEmptyBehaviorData();
-            var parrotBehavior = new ParrotBehavior(
-                parrotBehaviorData,
-                thingService);
+            parrotBehaviorData.BehaviorType = nameof(ParrotBehavior);
+            var parrotBehavior = thingService.FindBehavior(parrotBehaviorData);
             parrot.AddBehavior(parrotBehavior);
 
             var observantBehaviorData = thingService.GetEmptyBehaviorData();

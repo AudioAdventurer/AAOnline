@@ -61,8 +61,11 @@ namespace AudioAdventurer.Library.Common.Actions.Travel
                 }
             }
 
-            session.WriteServerOutput(
-                _writer.WriteUnknownDirection(whereToGo));
+            if (session != null)
+            {
+                session.WriteServerOutput(
+                    _writer.WriteUnknownDirection(whereToGo));
+            }
         }
     }
 }

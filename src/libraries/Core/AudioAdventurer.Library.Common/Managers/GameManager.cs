@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading;
 using AudioAdventurer.Library.Common.EventArguments;
+using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.Common.Models;
@@ -17,6 +19,7 @@ namespace AudioAdventurer.Library.Common.Managers
         private readonly List<ISession> _sessions;
         private readonly Queue<IActionInput> _actions;
         private readonly ICommandManager _commandManager;
+        private readonly IMessageBus _messageBus;
 
         private bool _running;
         private bool _stopping;
@@ -30,13 +33,36 @@ namespace AudioAdventurer.Library.Common.Managers
         public event EventHandler ActionDequeued;
 
         public GameManager(
-            ICommandManager commandManager)
+            ICommandManager commandManager,
+            IMessageBus messageBus)
         {
             _lock = new object();
             _commandManager = commandManager;
 
             _sessions = new List<ISession>();
             _actions = new Queue<IActionInput>();
+
+            messageBus.MessageReceived += MessageBus_MessageReceived;
+            _messageBus = messageBus;
+
+        }
+
+        private void MessageBus_MessageReceived(object sender, EventArgs e)
+        {
+            if (e is MessageReceivedEventArgs args)
+            {
+                var ge = args.Message.Event;
+
+                if (ge is SubmitCommandEvent sce)
+                {
+                    var actionInput = new ActionInput(
+                        sce.CommandText,
+                        null, 
+                        sce.Actor);
+
+                    EnqueueAction(actionInput);
+                }
+            }
         }
 
         public void Start()

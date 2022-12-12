@@ -1,4 +1,5 @@
-﻿using AudioAdventurer.Library.Common.Models;
+﻿using AudioAdventurer.Library.Common.Events;
+using AudioAdventurer.Library.Common.Models;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Handlers
@@ -22,6 +23,17 @@ namespace AudioAdventurer.Library.Common.Handlers
         public void SendMessage(IGameEvent gameEvent)
         {
             _messageBus.SendMessage(gameEvent);
+        }
+
+        public void SendCommandMessage(string command, IThing actor)
+        {
+            var sce = new SubmitCommandEvent
+            {
+                Actor = actor,
+                CommandText = command
+            };
+
+            SendMessage(sce);
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using AudioAdventurer.Library.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AudioAdventurer.Library.Common.Constants;
 using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
@@ -14,15 +9,12 @@ namespace AudioAdventurer.Library.Common.Actions.Communicate
 {
     public class Say : IGameAction
     {
-        private readonly IMessageBus _messageBus;
         private readonly IServerOutputWriter _writer;
 
         public Say(
-            IServerOutputWriter writer,
-            IMessageBus messageBus)
+            IServerOutputWriter writer)
         {
             _writer = writer;
-            _messageBus = messageBus;
         }
 
         public string Command => "say";
@@ -53,14 +45,18 @@ namespace AudioAdventurer.Library.Common.Actions.Communicate
                 100, 
                 contextMessage);
 
+            // Send event for others
             var sayEvent = new VerbalCommunicationEvent(
                 actor, 
                 sm, 
                 VerbalCommunicationType.Say);
             actor.EventHandler.SendMessage(sayEvent);
 
-            var output = _writer.WriteSayOutput(sayText);
-            actionInput.Session.WriteServerOutput(output);
+            if (actionInput.Session != null)
+            {
+                var output = _writer.WriteSayOutput(sayText);
+                actionInput.Session.WriteServerOutput(output);
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AudioAdventurer.GameExtensions.SampleAdventure.Factories
 
             if (behaviorType.Equals(nameof(ParrotBehavior)))
             {
-                return new ParrotBehavior(behaviorInfo, thingService);
+                return new ParrotBehavior(behaviorInfo);
             }
 
             return null;

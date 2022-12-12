@@ -45,7 +45,7 @@ namespace AudioAdventurer.Library.Common.Behaviors
             var serverOutput = new ServerOutput();
             serverOutput.AppendEntry(
                 ServerOutputDataTypes.Name,
-                $"{verbalEvent.ActiveThing.Name} says ",
+                $"{verbalEvent.ActiveThing.Name} says",
                 false);
 
             serverOutput.AppendEntry(
