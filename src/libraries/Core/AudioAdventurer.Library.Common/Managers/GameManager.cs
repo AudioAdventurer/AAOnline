@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading;
+using System.Threading.Tasks;
 using AudioAdventurer.Library.Common.EventArguments;
 using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Helpers;
@@ -60,7 +61,10 @@ namespace AudioAdventurer.Library.Common.Managers
                         null, 
                         sce.Actor);
 
-                    EnqueueAction(actionInput);
+                    Task.Run(() =>
+                    {
+                        EnqueueAction(actionInput);
+                    });
                 }
             }
         }
@@ -136,7 +140,10 @@ namespace AudioAdventurer.Library.Common.Managers
                     session.UserInputReceived += UserInputReceived;
                     _sessions.Add(session);
 
-                    OnSessionAddedHandler(session);
+                    Task.Run(() =>
+                    {
+                        OnSessionAddedHandler(session);
+                    });
                 }
 
                 return true;
@@ -169,7 +176,10 @@ namespace AudioAdventurer.Library.Common.Managers
                     session,
                     actor);
 
-                EnqueueAction(action);
+                Task.Run(() =>
+                {
+                    EnqueueAction(action);
+                });
             }
         }
 
@@ -182,7 +192,10 @@ namespace AudioAdventurer.Library.Common.Managers
                     session.UserInputReceived -= UserInputReceived;
                     _sessions.Remove(session);
 
-                    OnSessionRemovedHandler(session);
+                    Task.Run(() =>
+                    {
+                        OnSessionRemovedHandler(session);
+                    });
                 }
             }
         }
@@ -197,7 +210,11 @@ namespace AudioAdventurer.Library.Common.Managers
                 }
 
                 _actions.Enqueue(action);
-                OnActionEnqueuedHandler(action);
+
+                Task.Run(() =>
+                {
+                    OnActionEnqueuedHandler(action);
+                });
 
                 return true;
             }
@@ -209,7 +226,11 @@ namespace AudioAdventurer.Library.Common.Managers
             {
                 if (_actions.TryDequeue(out IActionInput action))
                 {
-                    OnActionDequeuedHandler(action);
+                    Task.Run(() =>
+                    {
+                        OnActionDequeuedHandler(action);
+                    });
+                    
                     return action;
                 }
 

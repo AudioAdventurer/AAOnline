@@ -50,7 +50,6 @@ namespace AudioAdventurer.GameExtensions.SampleAdventure.Builders
                 eb2.AddDestination(DirectionConstants.Up, cavern1.Id);
             }
 
-
             var parrot = thingService.BuildObject("Parrot Statue",
                 "A carved statue of a parrot fashioned out of white marble.");
             parrot.AddParent(cavernRoom);

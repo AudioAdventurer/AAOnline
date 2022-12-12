@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AudioAdventurer.Library.Common.EventArguments;
 using AudioAdventurer.Library.Common.Interfaces;
 using AudioAdventurer.Library.SimpleMessageBus.Objects;
@@ -23,14 +24,15 @@ namespace AudioAdventurer.Library.SimpleMessageBus.Managers
                 Message = busMessage
             };
 
-            OnMessageReceived(args);
+            Task.Run(() =>
+            {
+                OnMessageReceived(args);
+            });
         }
 
         public void OnMessageReceived(MessageReceivedEventArgs args)
         {
             MessageReceived?.Invoke(this, args);
         }
-
-
     }
 }
