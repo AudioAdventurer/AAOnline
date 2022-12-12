@@ -16,7 +16,9 @@
     <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Client.Local\AudioAdventurer.Library.Client.Local.csproj" />
     <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
     <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Data\AudioAdventurer.Library.Data.csproj" />
+    <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.SimpleMessageBus\AudioAdventurer.Library.SimpleMessageBus.csproj" />
     <ProjectReference Include="..\..\libraries\Core\AudioAdventurer.Library.Testing\AudioAdventurer.Library.Testing.csproj" />
+    <ProjectReference Include="..\..\libraries\GameExtensions\AudioAdventurer.GameExtensions.SampleAdventure\AudioAdventurer.GameExtensions.SampleAdventure.csproj" />
   </ItemGroup>
 
 </Project>

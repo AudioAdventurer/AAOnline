@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Behaviors;
+using AudioAdventurer.Library.Common.Events;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Helpers
@@ -77,6 +78,36 @@ namespace AudioAdventurer.Library.Common.Helpers
 
             // No room found
             return null;
+        }
+
+        public static bool IsSameRoomDifferentThing(
+            this IThing thisThing,
+            VerbalCommunicationEvent verbalEvent)
+        {
+            if (verbalEvent != null
+                && thisThing != null)
+            {
+                var thisThingRoom = thisThing.FindParentRoom();
+
+                if (thisThingRoom != null)
+                {
+                    var activeThing = verbalEvent.ActiveThing;
+                    var activeThingRoom = activeThing.FindParentRoom();
+
+                    // Verbal event was in same room
+                    if (activeThingRoom != null
+                        && activeThingRoom.Id.Equals(thisThingRoom.Id))
+                    {
+                        // Not the parrot saying something
+                        if (!activeThing.Id.Equals(thisThing.Id))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static bool IsContextualDirectionCommand(this IThing thing, string command)

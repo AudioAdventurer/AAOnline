@@ -14,16 +14,18 @@ namespace AudioAdventurer.Library.Data.Services
         private readonly IRelationshipRepo _relationshipRepo;
         private readonly IThingInfoRepo _thingRepo;
 
-        private readonly List<IBehaviorResolver> _behaviorResolvers;
+        private readonly List<IBehaviorFactory> _behaviorResolvers;
         
         private readonly ICacheManager<IThing> _thingCacheManager;
+        private readonly IMessageBus _messageBus;
 
         public ThingService(
             IBehaviorInfoRepo behaviorRepo,
             IRelationshipRepo relationshipRepo,
             IThingInfoRepo thingRepo,
-            IEnumerable<IBehaviorResolver> behaviorResolvers,
-            ICacheManager<IThing> thingCacheManager)
+            IEnumerable<IBehaviorFactory> behaviorResolvers,
+            ICacheManager<IThing> thingCacheManager,
+            IMessageBus messageBus)
         {
             _behaviorRepo = behaviorRepo;
             _relationshipRepo = relationshipRepo;
@@ -31,6 +33,7 @@ namespace AudioAdventurer.Library.Data.Services
 
             _behaviorResolvers = behaviorResolvers.ToList();
             _thingCacheManager = thingCacheManager;
+            _messageBus = messageBus;
         }
 
         public IThing GetThing(Guid id)
@@ -146,11 +149,13 @@ namespace AudioAdventurer.Library.Data.Services
             return output;
         }
 
-        private IBehavior FindBehavior(IBehaviorData behaviorInfo)
+        public IBehavior FindBehavior(IBehaviorData behaviorInfo)
         {
             foreach (var behaviorResolver in _behaviorResolvers)
             {
-                var behavior = behaviorResolver.ResolveBehavior(behaviorInfo);
+                var behavior = behaviorResolver.ConstructBehavior(
+                    behaviorInfo,
+                    this);
 
                 if (behavior != null)
                 {
@@ -159,6 +164,21 @@ namespace AudioAdventurer.Library.Data.Services
             }
 
             return null;
+        }
+
+        public IMessageBus GetMessageBus()
+        {
+            return _messageBus;
+        }
+
+        public IBehaviorData GetEmptyBehaviorData()
+        {
+            return new BehaviorData();
+        }
+
+        public IThingData GetEmptyThingData()
+        {
+            return new ThingData();
         }
     }
 }

@@ -17,6 +17,27 @@ namespace AudioAdventurer.Library.Common.Models
 
         public Thing(
             IThingData data,
+            IEnumerable<Guid> parents,
+            IEnumerable<Guid> children,
+            IThingService thingService)
+        {
+            _thingData = data;
+            _children = children.ToList();
+            _parents = parents.ToList();
+
+            _thingService = thingService;
+            EventHandler = new EventHandler(
+                this, 
+                thingService.GetMessageBus());
+
+            BehaviorHandler = new BehaviorHandler(
+                this);
+
+            _lock = new object();
+        }
+
+        public Thing(
+            IThingData data,
             IEnumerable<IBehavior> behaviors,
             IEnumerable<Guid> parents,
             IEnumerable<Guid> children,
@@ -27,9 +48,13 @@ namespace AudioAdventurer.Library.Common.Models
             _parents = parents.ToList();
 
             _thingService = thingService;
-            EventHandler = new EventHandler(this);
-            BehaviorHandler = new BehaviorHandler(
+            
+            EventHandler = new EventHandler(
                 this,
+                _thingService.GetMessageBus());
+
+            BehaviorHandler = new BehaviorHandler(
+                this, 
                 behaviors);
             _lock = new object();
         }
@@ -267,6 +292,12 @@ namespace AudioAdventurer.Library.Common.Models
             {
                 return _thingData;
             }
+        }
+
+        public void AddBehavior<T>(T behavior)
+            where T : IBehavior
+        {
+            BehaviorHandler.Add(behavior);
         }
     }
 }

@@ -4,6 +4,19 @@ namespace AudioAdventurer.Library.Common.Constants
 {
     public static class DirectionConstants
     {
+        public const string North = "north";
+        public const string NorthEast = "northeast";
+        public const string East = "east";
+        public const string SouthEast = "southeast";
+        public const string South = "south";
+        public const string SouthWest = "southwest";
+        public const string West = "west";
+        public const string NorthWest = "northwest";
+        public const string Up = "up";
+        public const string Down = "down";
+        public const string Enter = "enter";
+        public const string Exit = "exit";
+
         public static readonly Dictionary<string, string> PrimaryToSecondaryCommandMap = new Dictionary<string, string>()
         {
             { "north", "n" },

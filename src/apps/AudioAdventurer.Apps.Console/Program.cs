@@ -1,10 +1,12 @@
 ﻿using System.Threading;
 using AudioAdventurer.Apps.Console.Modules;
+using AudioAdventurer.GameExtensions.SampleAdventure.Builders;
+using AudioAdventurer.GameExtensions.SampleAdventure.Modules;
 using AudioAdventurer.Library.Adventure.Builders;
 using AudioAdventurer.Library.Client.Local.Manager;
-using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Interfaces;
+using AudioAdventurer.Library.Common.Modules;
 using AudioAdventurer.Library.Common.Sessions;
 using Autofac;
 
@@ -21,6 +23,8 @@ namespace AudioAdventurer.Apps.Console
 
             var builder = new ContainerBuilder();
             builder.RegisterModule(new LocalModule(config));
+            builder.RegisterModule(new CommonModule(config));
+            builder.RegisterModule(new SampleAdventureModule(config));
             _container = builder.Build();
 
             // Get the IThingService
@@ -31,7 +35,7 @@ namespace AudioAdventurer.Apps.Console
 
             var player = thingService.BuildPlayer(
                 "Tester", 
-                out PlayerBehavior playerBehavior);
+                out IBehavior playerBehavior);
 
             player.AddParent(startLocation);
 

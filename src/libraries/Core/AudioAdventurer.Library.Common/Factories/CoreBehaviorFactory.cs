@@ -1,19 +1,14 @@
-﻿using AudioAdventurer.Library.Common.Behaviors;
+﻿using System.Linq;
+using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Interfaces;
 
 namespace AudioAdventurer.Library.Common.Factories
 {
-    public class CoreBehaviorFactory : IBehaviorResolver
+    public class CoreBehaviorFactory : IBehaviorFactory
     {
-        private readonly IThingService _thingService;
-
-        public CoreBehaviorFactory(
+        public IBehavior ConstructBehavior(
+            IBehaviorData behaviorInfo,
             IThingService thingService)
-        {
-            _thingService = thingService;
-        }
-
-        public IBehavior ResolveBehavior(IBehaviorData behaviorInfo)
         {
             var behaviorType = behaviorInfo.BehaviorType;
 
@@ -24,17 +19,22 @@ namespace AudioAdventurer.Library.Common.Factories
 
             if (behaviorType.Equals(nameof(ExitBehavior)))
             {
-                return new ExitBehavior(behaviorInfo, _thingService);
+                return new ExitBehavior(behaviorInfo, thingService);
             }
 
             if (behaviorType.Equals(nameof(MovableBehavior)))
             {
-                return new MovableBehavior(behaviorInfo, _thingService);
+                return new MovableBehavior(behaviorInfo, thingService);
+            }
+
+            if (behaviorType.Equals(nameof(ObservantBehavior)))
+            {
+                return new ObservantBehavior(behaviorInfo, thingService);
             }
 
             if (behaviorType.Equals(nameof(PlayerBehavior)))
             {
-                return new PlayerBehavior(behaviorInfo, _thingService);
+                return new PlayerBehavior(behaviorInfo, thingService);
             }
 
             if (behaviorType.Equals(nameof(RoomBehavior)))
@@ -45,6 +45,11 @@ namespace AudioAdventurer.Library.Common.Factories
             if (behaviorType.Equals(nameof(UserControlledBehavior)))
             {
                 return new UserControlledBehavior(behaviorInfo);
+            }
+
+            if (behaviorType.Equals(nameof(UserSensoryBehavior)))
+            {
+                return new UserSensoryBehavior(behaviorInfo);
             }
 
             if (behaviorType.Equals(nameof(WorldBehavior)))

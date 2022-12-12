@@ -10,5 +10,6 @@
         public const string Name = "name";
         public const string Notice = "notice";
         public const string Text = "text";
+        public const string Whitespace = "white";
     }
 }

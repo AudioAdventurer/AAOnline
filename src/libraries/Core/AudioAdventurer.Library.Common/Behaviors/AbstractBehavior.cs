@@ -17,14 +17,14 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
         public Guid Id => _behaviorData.Id;
 
-        public Guid ParentId => _behaviorData.ParentId;
+        public IThing Parent { get; private set; }
 
         public void SetParent(IThing parent)
         {
             _behaviorData.ParentId = parent.Id;
+            Parent = parent;
         }
-
-
+        
         protected virtual void OnAddBehavior()
         {
         }

@@ -4,7 +4,8 @@ using AudioAdventurer.Library.Common.Senses;
 
 namespace AudioAdventurer.Library.Common.Events
 {
-    public abstract class AbstractGameEvent : IIdentifiableObject
+    public abstract class AbstractGameEvent : IGameEvent, 
+        IIdentifiableObject
     {
         protected AbstractGameEvent(
             IThing activeThing, 

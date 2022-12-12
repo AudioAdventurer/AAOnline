@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AudioAdventurer.Library.Adventure.Builders;
+using AudioAdventurer.Library.Common.Interfaces;
+using AudioAdventurer.Library.SimpleMessageBus.Managers;
 using AudioAdventurer.Library.Testing.Services;
 using NUnit.Framework;
 
@@ -11,7 +14,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestAddChild()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(),
+                new List<IBehaviorFactory>());
             
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -24,7 +29,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestRemoveChild()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -41,7 +48,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestRemoveChildRepeat()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -66,7 +75,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestRemoveParent()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -83,7 +94,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestSwitchParent()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var roomB = thingService.BuildRoom("Room B");
@@ -103,7 +116,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestMultipleChildren()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -120,7 +135,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestRemoveFirstChild()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");
@@ -143,7 +160,9 @@ namespace AudioAdventurer.Library.Common.Tests.Models
         [Test]
         public void TestRemoveSecondChild()
         {
-            InMemoryThingService thingService = new InMemoryThingService();
+            InMemoryThingService thingService = new InMemoryThingService(
+                new SimpleMessageBusManager(), 
+                new List<IBehaviorFactory>());
 
             var roomA = thingService.BuildRoom("Room A");
             var candle = thingService.BuildMoveableItem("A candle");

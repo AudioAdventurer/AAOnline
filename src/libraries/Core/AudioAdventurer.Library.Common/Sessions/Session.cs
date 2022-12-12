@@ -9,6 +9,7 @@ namespace AudioAdventurer.Library.Common.Sessions
         public Session(IThing player)
         {
             Player = player;
+            player.BehaviorHandler.SetSession(this);
         }
 
         public IThing Player { get; }

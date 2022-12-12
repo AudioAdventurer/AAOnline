@@ -6,14 +6,18 @@ namespace AudioAdventurer.Library.Common.Models
     {
         public ContextualString(
             IThing originator,
-            IThing receiver)
+            IThing receiver,
+            string rawMessage)
         {
             Originator = originator;
             Receiver = receiver;
+            RawMessage = rawMessage;
         }
 
         public IThing Originator { get; }
         public IThing Receiver { get; }
+
+        public string RawMessage { get; set; }
 
         public string ToOriginator { get; set; }
         public string ToReceiver { get; set; }

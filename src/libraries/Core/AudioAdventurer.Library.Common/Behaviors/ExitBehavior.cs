@@ -139,7 +139,8 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
             var leaveContextMessage = new ContextualString(
                 thingToMove, 
-                parent)
+                parent,
+                dir)
             {
                 ToOriginator = null,
                 ToReceiver = $"{thingToMove.Name} moves {dir}.",
@@ -148,14 +149,22 @@ namespace AudioAdventurer.Library.Common.Behaviors
 
             var arriveContextMessage = new ContextualString(
                 thingToMove, 
-                destination)
+                destination,
+                dir)
             {
                 ToOriginator = $"You move {dir} to {destination.Name}.",
                 ToReceiver = $"{thingToMove.Name} arrives, heading {dir}.",
                 ToOthers = $"{thingToMove.Name} arrives, heading {dir}.",
             };
-            var leaveMessage = new SensoryMessage(SensoryType.Sight, 100, leaveContextMessage);
-            var arriveMessage = new SensoryMessage(SensoryType.Sight, 100, arriveContextMessage);
+            var leaveMessage = new SensoryMessage(
+                SensoryType.Sight,
+                100, 
+                leaveContextMessage);
+
+            var arriveMessage = new SensoryMessage(
+                SensoryType.Sight, 
+                100, 
+                arriveContextMessage);
 
             return movableBehavior.Move(destination, parent, leaveMessage, arriveMessage);
         }

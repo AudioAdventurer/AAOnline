@@ -21,4 +21,7 @@ public interface IServerOutputWriter
 
     public ServerOutput WriteUnknownDirection(
         string direction);
+
+    public ServerOutput WriteSayOutput(
+        string statement);
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AudioAdventurer.Library.Common.Behaviors;
 using AudioAdventurer.Library.Common.Constants;
@@ -67,6 +66,16 @@ namespace AudioAdventurer.Library.Common.Writers
             return serverOutput;
         }
 
+        public ServerOutput WriteSayOutput(string statement)
+        {
+            var serverOutput = new ServerOutput();
+            serverOutput.AppendEntry(
+                ServerOutputDataTypes.Text,
+                $"You say: \"{statement}\"",
+                true);
+            return serverOutput;
+        }
+
         public ServerOutput WriteThingDetails(
             IThing viewer, 
             IThing viewedThing)
@@ -116,6 +125,7 @@ namespace AudioAdventurer.Library.Common.Writers
                 true);
 
             var exits = new List<string>();
+            var things = new List<string>();
 
             var children = room.GetChildren();
             foreach (var child in children)
@@ -125,6 +135,14 @@ namespace AudioAdventurer.Library.Common.Writers
                 {
                     exits.Add(exitBehavior.GetExitCommandFrom(room));
                 }
+                else
+                {
+                    if (!child.Id.Equals(viewer.Id))
+                    {
+                        things.Add(child.Name);
+                    }
+                }
+
             }
 
             if (exits.Any())
@@ -134,10 +152,23 @@ namespace AudioAdventurer.Library.Common.Writers
                     "Here you notice:",
                     true);
 
-                serverOutput.AppendEntry(
-                    ServerOutputDataTypes.Text,
-                    $"  Routes: {string.Join(", ", exits)}",
-                    true);
+                if (exits.Any())
+                {
+                    serverOutput.AppendEntry(
+                        ServerOutputDataTypes.Text,
+                        $"  Routes: {string.Join(", ", exits)}",
+                        true);
+                }
+
+                if (things.Any())
+                {
+                    serverOutput.AppendEntry(
+                        ServerOutputDataTypes.Text,
+                        $"  Things: {string.Join(", ", things)}",
+                        true);
+                }
+
+                serverOutput.AppendEmptyLine();
             }
 
             return serverOutput;

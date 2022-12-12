@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using AudioAdventurer.Library.Common.Helpers;
 using AudioAdventurer.Library.Common.Models;
-using AudioAdventurer.Library.Testing.Helpers;
 using NUnit.Framework;
+using RandomHelper = AudioAdventurer.Library.Testing.Helpers.RandomHelper;
 
 namespace AudioAdventurer.Library.Common.Tests.Helpers
 {

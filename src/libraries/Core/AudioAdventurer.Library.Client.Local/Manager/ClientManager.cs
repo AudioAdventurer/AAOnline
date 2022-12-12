@@ -10,9 +10,9 @@ namespace AudioAdventurer.Library.Client.Local.Manager
         : IClientManager
     {
         private readonly ISession _session;
+        private readonly IServerOutputRenderer _render;
         private Thread _thread;
         private bool _running;
-        private IServerOutputRenderer _render;
 
         public ClientManager(
             ISession session)
@@ -63,7 +63,7 @@ namespace AudioAdventurer.Library.Client.Local.Manager
             } while (_running);
         }
 
-        private void ServerOutputReceived(object? sender, EventArgs e)
+        private void ServerOutputReceived(object sender, EventArgs e)
         {
             if (e is ServerOutputReceivedEventArgs args)
             {

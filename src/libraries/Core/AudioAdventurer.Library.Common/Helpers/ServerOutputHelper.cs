@@ -32,5 +32,16 @@ namespace AudioAdventurer.Library.Common.Helpers
 
             return output;
         }
+
+        public static IServerOutput AppendEmptyLine(
+            this IServerOutput output)
+        {
+            output.AppendEntry(
+                ServerOutputDataTypes.Text,
+                "",
+                true);
+
+            return output;
+        }
     }
 }
