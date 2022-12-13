@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
 using AudioAdventurer.Library.Common.EventArguments;
@@ -45,7 +44,6 @@ namespace AudioAdventurer.Library.Common.Managers
 
             messageBus.MessageReceived += MessageBus_MessageReceived;
             _messageBus = messageBus;
-
         }
 
         private void MessageBus_MessageReceived(object sender, EventArgs e)
