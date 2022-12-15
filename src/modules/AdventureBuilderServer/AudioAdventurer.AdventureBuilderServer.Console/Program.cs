@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
-using System.Threading.Tasks;
-using AudioAdventurer.Library.Common.Objects;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;

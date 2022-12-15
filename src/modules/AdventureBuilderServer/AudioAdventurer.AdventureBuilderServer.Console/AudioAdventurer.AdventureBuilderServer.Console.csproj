@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\libraries\Core\AudioAdventurer.Library.Adventure\AudioAdventurer.Library.Adventure.csproj" />
+    <ProjectReference Include="..\..\..\libraries\Core\AudioAdventurer.Library.Cache\AudioAdventurer.Library.Cache.csproj" />
     <ProjectReference Include="..\..\..\libraries\Core\AudioAdventurer.Library.Common\AudioAdventurer.Library.Common.csproj" />
+    <ProjectReference Include="..\..\..\libraries\Core\AudioAdventurer.Library.Data\AudioAdventurer.Library.Data.csproj" />
+    <ProjectReference Include="..\..\..\libraries\Core\AudioAdventurer.Library.SimpleMessageBus\AudioAdventurer.Library.SimpleMessageBus.csproj" />
   </ItemGroup>
 
 </Project>
